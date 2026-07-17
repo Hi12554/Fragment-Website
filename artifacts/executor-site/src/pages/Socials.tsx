@@ -1,13 +1,14 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { FaDiscord, FaYoutube, FaTwitter, FaTiktok } from "react-icons/fa";
+import { FaDiscord, FaYoutube } from "react-icons/fa";
 
 const SOCIALS = [
   {
     name: "Discord",
     desc: "Join the Community",
+    href: "https://discord.gg/VvSK3zUHZP",
     icon: FaDiscord,
-    stats: "24,891 members",
+    stats: "Join the server",
     color: "#5865F2",
     bg: "from-[#5865F2]/20 to-transparent",
     glow: "hover:shadow-[0_0_20px_rgba(88,101,242,0.4)]",
@@ -15,29 +16,12 @@ const SOCIALS = [
   {
     name: "YouTube",
     desc: "Watch Tutorials",
+    href: "https://www.youtube.com/@FragmentExecutor",
     icon: FaYoutube,
-    stats: "12.4K subscribers",
+    stats: "Subscribe",
     color: "#FF0000",
     bg: "from-[#FF0000]/20 to-transparent",
     glow: "hover:shadow-[0_0_20px_rgba(255,0,0,0.4)]",
-  },
-  {
-    name: "Twitter / X",
-    desc: "Follow for Updates",
-    icon: FaTwitter,
-    stats: "8,230 followers",
-    color: "#1DA1F2",
-    bg: "from-[#1DA1F2]/20 to-transparent",
-    glow: "hover:shadow-[0_0_20px_rgba(29,161,242,0.4)]",
-  },
-  {
-    name: "TikTok",
-    desc: "Watch Clips",
-    icon: FaTiktok,
-    stats: "31K followers",
-    color: "#FF0050",
-    bg: "from-[#FF0050]/20 to-transparent",
-    glow: "hover:shadow-[0_0_20px_rgba(255,0,80,0.4)]",
   },
 ];
 
@@ -53,25 +37,23 @@ export const Socials: React.FC = () => {
           COMMUNITY
         </h2>
         <p className="text-muted-foreground max-w-xl mx-auto">
-          Connect with thousands of developers, share scripts, get support, and
-          stay updated on the latest Fragment features.
+          Connect with the Fragment community. Get support, share scripts, and
+          stay updated on the latest news.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-4xl">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-2xl">
         {SOCIALS.map((social, idx) => (
           <motion.a
-            href="#"
+            href={social.href}
+            target="_blank"
+            rel="noopener noreferrer"
             key={social.name}
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: idx * 0.1 }}
             className={`group relative overflow-hidden bg-card border border-white/5 rounded-xl p-8 transition-all duration-300 hover:-translate-y-2 ${social.glow}`}
-            style={
-              {
-                "--hover-color": social.color,
-              } as React.CSSProperties
-            }
+            style={{ "--hover-color": social.color } as React.CSSProperties}
           >
             {/* Background gradient on hover */}
             <div
@@ -80,7 +62,9 @@ export const Socials: React.FC = () => {
 
             <div className="relative z-10 flex items-start justify-between">
               <div>
-                <social.icon className="w-12 h-12 mb-6 text-gray-400 group-hover:text-[var(--hover-color)] transition-colors duration-300" />
+                <social.icon
+                  className="w-12 h-12 mb-6 text-gray-400 group-hover:text-[var(--hover-color)] transition-colors duration-300"
+                />
                 <h3 className="text-2xl font-mono font-bold text-white mb-1">
                   {social.name}
                 </h3>

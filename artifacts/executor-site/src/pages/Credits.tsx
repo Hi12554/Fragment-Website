@@ -3,56 +3,28 @@ import { motion } from "framer-motion";
 
 const TEAM = [
   {
-    category: "CORE DEV TEAM",
+    category: "DEVELOPER",
     members: [
       {
-        name: "0xNova",
+        name: "popfork1",
         role: "Lead Developer",
-        desc: "Architect of the injection engine and Hyperion bypass core.",
+        desc: "Architect of Fragment — injection engine, bypass core, and everything that makes it run.",
         color:
           "border-primary text-primary bg-primary/10 shadow-[0_0_15px_rgba(168,85,247,0.3)]",
+        avatar: "https://cdn.discordapp.com/avatars/1132477120665370674/00c878ea66e11aaceb7f94c93973c7f0.webp?size=1280",
       },
+    ],
+  },
+  {
+    category: "OLD UI CREATOR",
+    members: [
       {
-        name: "crypt0byte",
-        role: "Systems Engineer",
-        desc: "Memory management, kernel hooks, and anti-detection layers.",
+        name: "5Green",
+        role: "UI Designer",
+        desc: "Designed the original Fragment interface and visual identity.",
         color:
           "border-secondary text-secondary bg-secondary/10 shadow-[0_0_15px_rgba(6,182,212,0.3)]",
-      },
-      {
-        name: "velvet.exe",
-        role: "UI/UX Lead",
-        desc: "Designed the Fragment interface and brand system from scratch.",
-        color:
-          "border-pink-500 text-pink-500 bg-pink-500/10 shadow-[0_0_15px_rgba(236,72,153,0.3)]",
-      },
-    ],
-  },
-  {
-    category: "FRAGMENT API CONTRIBUTORS",
-    members: [
-      {
-        name: "phantom_api",
-        role: "API Core",
-        desc: "Built the Fragment scripting API and Lua 5.4 runtime bridge.",
-        color: "border-success text-success bg-success/10",
-      },
-      {
-        name: "nullref",
-        role: "SDK Developer",
-        desc: "Authored the public Fragment SDK and developer documentation.",
-        color: "border-success text-success bg-success/10",
-      },
-    ],
-  },
-  {
-    category: "UI DESIGNERS",
-    members: [
-      {
-        name: "aura.design",
-        role: "Motion & Animation",
-        desc: "All keyframe animations, transitions, and micro-interactions.",
-        color: "border-yellow-500 text-yellow-500 bg-yellow-500/10",
+        avatar: "https://cdn.discordapp.com/avatars/566045062753026098/4149d1153d1c16df240d729bad8d98b9.webp?size=1280",
       },
     ],
   },
@@ -73,9 +45,9 @@ export const Credits: React.FC = () => {
       </div>
 
       <div className="space-y-20">
-        {TEAM.map((section, sIdx) => (
+        {TEAM.map((section) => (
           <div key={section.category}>
-            <h3 className="text-xl font-mono font-bold text-white mb-8 border-l-4 border-white pl-4 tracking-widest">
+            <h3 className="text-xl font-mono font-bold text-white mb-8 border-l-4 border-primary pl-4 tracking-widest">
               {section.category}
             </h3>
 
@@ -91,15 +63,22 @@ export const Credits: React.FC = () => {
                 >
                   <div className="flex items-center gap-4 mb-4">
                     <div
-                      className={`w-12 h-12 rounded-xl border flex items-center justify-center font-mono font-bold text-lg ${member.color} transition-all duration-300 group-hover:scale-110`}
+                      className={`w-14 h-14 rounded-xl border-2 overflow-hidden flex-shrink-0 transition-all duration-300 group-hover:scale-110 ${member.color}`}
                     >
-                      {member.name.charAt(0).toUpperCase()}
+                      <img
+                        src={member.avatar}
+                        alt={member.name}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).style.display = "none";
+                        }}
+                      />
                     </div>
                     <div>
-                      <div className="font-mono font-bold text-white">
+                      <div className="font-mono font-bold text-white text-lg">
                         {member.name}
                       </div>
-                      <div className="text-xs text-gray-500 uppercase tracking-wider">
+                      <div className="text-xs text-gray-500 uppercase tracking-wider font-mono">
                         {member.role}
                       </div>
                     </div>

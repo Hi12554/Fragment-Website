@@ -7,10 +7,18 @@ import { Build } from "./pages/Build";
 import { Status } from "./pages/Status";
 import { Socials } from "./pages/Socials";
 import { Credits } from "./pages/Credits";
+import { Admin } from "./pages/Admin";
 import { AnimatePresence, motion } from "framer-motion";
+
+// Detect /admin route
+const isAdminRoute = window.location.pathname === "/admin";
 
 function App() {
   const [activePage, setActivePage] = useState("Home");
+
+  if (isAdminRoute) {
+    return <Admin />;
+  }
 
   const renderPage = () => {
     switch (activePage) {

@@ -1,13 +1,43 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   DownloadCloud,
   FileArchive,
   Terminal as TermIcon,
   AlertTriangle,
+  AlertCircle,
+  ChevronDown,
 } from "lucide-react";
+import { getConfig, AdminConfig, ApiStatus } from "../store/adminStore";
+
+function StatusBadge({ status }: { status: ApiStatus }) {
+  if (status === "up") return null;
+  if (status === "down") {
+    return (
+      <div className="w-full mb-4 flex items-center gap-2 bg-red-500/10 border border-red-500/40 rounded-xl px-4 py-2 text-red-400 font-mono text-xs">
+        <AlertCircle className="w-4 h-4 flex-shrink-0" />
+        Currently Offline
+      </div>
+    );
+  }
+  return (
+    <div className="w-full mb-4 flex items-center gap-2 bg-amber-500/10 border border-amber-500/40 rounded-xl px-4 py-2 text-amber-400 font-mono text-xs">
+      <ChevronDown className="w-4 h-4 flex-shrink-0" />
+      Roblox Downgrade Required
+    </div>
+  );
+}
 
 export const Download: React.FC = () => {
+  const [cfg, setCfg] = useState<AdminConfig>(getConfig);
+
+  // Re-read on focus so admin changes reflect immediately
+  useEffect(() => {
+    const refresh = () => setCfg(getConfig());
+    window.addEventListener("focus", refresh);
+    return () => window.removeEventListener("focus", refresh);
+  }, []);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -21,6 +51,7 @@ export const Download: React.FC = () => {
         <p className="text-muted-foreground">
           Fragment — choose your preferred API integration below.
         </p>
+        <p className="text-xs font-mono text-gray-600 mt-1">{cfg.version}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
@@ -36,21 +67,36 @@ export const Download: React.FC = () => {
           <h3 className="text-2xl font-mono font-bold text-white mb-1">
             Velocity API
           </h3>
-          <p className="text-xs font-mono text-primary/70 mb-4 tracking-widest uppercase">Fragment × Velocity</p>
+          <p className="text-xs font-mono text-primary/70 mb-4 tracking-widest uppercase">
+            Fragment × Velocity
+          </p>
+
+          <StatusBadge status={cfg.velocityStatus} />
+
           <p className="text-muted-foreground mb-6">
-            High-performance injection engine. Full Lua 5.4 support with JIT and auto-updater included.
+            High-performance injection engine. Full Lua 5.4 support with JIT
+            and auto-updater included.
           </p>
 
           <div className="font-mono text-xs text-gray-500 mb-6 bg-black/50 px-3 py-2 rounded">
-            <div>Version: v4.2.1 | Size: ~12.4 MB</div>
-            <div className="mt-1 truncate w-48 text-left text-gray-600">
-              SHA256: 8f4e9a...2b1c
-            </div>
+            <div>Version: {cfg.version} | Size: ~12.4 MB</div>
           </div>
 
-          <button className="w-full py-4 bg-primary text-white font-mono font-bold uppercase tracking-widest hover:bg-primary/90 transition-colors box-shadow-neon-purple mt-auto rounded-xl">
+          <a
+            href={cfg.velocityLink || "#"}
+            target={cfg.velocityLink && cfg.velocityLink !== "#" ? "_blank" : undefined}
+            rel="noopener noreferrer"
+            className={`w-full py-4 font-mono font-bold uppercase tracking-widest transition-colors box-shadow-neon-purple mt-auto rounded-xl text-center block ${
+              cfg.velocityStatus === "up"
+                ? "bg-primary text-white hover:bg-primary/90"
+                : "bg-primary/30 text-white/50 cursor-not-allowed pointer-events-none"
+            }`}
+            onClick={(e) => {
+              if (!cfg.velocityLink || cfg.velocityLink === "#") e.preventDefault();
+            }}
+          >
             Download Velocity API
-          </button>
+          </a>
         </div>
 
         {/* Xeno API */}
@@ -65,21 +111,36 @@ export const Download: React.FC = () => {
           <h3 className="text-2xl font-mono font-bold text-white mb-1">
             Xeno API
           </h3>
-          <p className="text-xs font-mono text-secondary/70 mb-4 tracking-widest uppercase">Fragment × Xeno</p>
+          <p className="text-xs font-mono text-secondary/70 mb-4 tracking-widest uppercase">
+            Fragment × Xeno
+          </p>
+
+          <StatusBadge status={cfg.xenoStatus} />
+
           <p className="text-muted-foreground mb-6">
-            Lightweight portable build. Extract and run — no installation required. Zero footprint.
+            Lightweight portable build. Extract and run — no installation
+            required. Zero footprint.
           </p>
 
           <div className="font-mono text-xs text-gray-500 mb-6 bg-black/50 px-3 py-2 rounded">
-            <div>Version: v4.2.1 | Size: ~4.1 MB</div>
-            <div className="mt-1 truncate w-48 text-left text-gray-600">
-              SHA256: 3a1f7c...9d2e
-            </div>
+            <div>Version: {cfg.version} | Size: ~4.1 MB</div>
           </div>
 
-          <button className="w-full py-4 bg-transparent border-2 border-secondary text-secondary hover:bg-secondary/10 font-mono font-bold uppercase tracking-widest transition-colors mt-auto rounded-xl">
+          <a
+            href={cfg.xenoLink || "#"}
+            target={cfg.xenoLink && cfg.xenoLink !== "#" ? "_blank" : undefined}
+            rel="noopener noreferrer"
+            className={`w-full py-4 font-mono font-bold uppercase tracking-widest transition-colors mt-auto rounded-xl text-center block border-2 ${
+              cfg.xenoStatus === "up"
+                ? "bg-transparent border-secondary text-secondary hover:bg-secondary/10"
+                : "border-secondary/30 text-secondary/30 cursor-not-allowed pointer-events-none"
+            }`}
+            onClick={(e) => {
+              if (!cfg.xenoLink || cfg.xenoLink === "#") e.preventDefault();
+            }}
+          >
             Download Xeno API
-          </button>
+          </a>
         </div>
       </div>
 

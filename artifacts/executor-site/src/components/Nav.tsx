@@ -30,7 +30,7 @@ export const Nav: React.FC<NavProps> = ({ activePage, setActivePage }) => {
             onClick={() => setActivePage("Home")}
           >
             <img
-              src="/attached_assets/Fragment_1784312093756.jpg"
+              src="/logo.jpg"
               alt="Fragment"
               className="w-8 h-8 rounded-lg object-cover box-shadow-neon-purple"
             />
