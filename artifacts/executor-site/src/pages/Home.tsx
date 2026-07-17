@@ -53,7 +53,7 @@ export const Home: React.FC<{ setActivePage: (p: string) => void }> = ({
         >
           <button
             onClick={() => setActivePage("Download")}
-            className="group relative px-8 py-4 bg-primary text-white font-mono font-bold uppercase tracking-widest overflow-hidden transition-all hover:scale-105 box-shadow-neon-purple w-full sm:w-auto"
+            className="group relative px-8 py-4 bg-primary text-white font-mono font-bold uppercase tracking-widest overflow-hidden transition-all hover:scale-105 box-shadow-neon-purple w-full sm:w-auto rounded-xl"
           >
             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
             <span className="relative flex items-center justify-center gap-2">
@@ -63,7 +63,7 @@ export const Home: React.FC<{ setActivePage: (p: string) => void }> = ({
           </button>
           <button
             onClick={() => setActivePage("Build")}
-            className="px-8 py-4 bg-card text-white font-mono font-bold uppercase tracking-widest border border-white/10 hover:border-white/30 transition-all w-full sm:w-auto"
+            className="px-8 py-4 bg-card text-white font-mono font-bold uppercase tracking-widest border border-white/10 hover:border-white/30 transition-all w-full sm:w-auto rounded-xl"
           >
             Developer API
           </button>
@@ -78,9 +78,9 @@ export const Home: React.FC<{ setActivePage: (p: string) => void }> = ({
         className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full"
       >
         {/* Feature 1 */}
-        <div className="bg-card border border-white/5 p-8 rounded-sm hover:border-primary/50 transition-colors group relative overflow-hidden">
+        <div className="bg-card border border-white/5 p-8 rounded-2xl hover:border-primary/50 transition-colors group relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/20 transition-colors" />
-          <div className="w-12 h-12 bg-primary/10 rounded-sm flex items-center justify-center mb-6 group-hover:box-shadow-neon-purple transition-all">
+          <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:box-shadow-neon-purple transition-all">
             <Cpu className="w-6 h-6 text-primary" />
           </div>
           <h3 className="text-xl font-mono font-bold text-white mb-3">
@@ -93,9 +93,9 @@ export const Home: React.FC<{ setActivePage: (p: string) => void }> = ({
         </div>
 
         {/* Feature 2 */}
-        <div className="bg-card border border-white/5 p-8 rounded-sm hover:border-success/50 transition-colors group relative overflow-hidden">
+        <div className="bg-card border border-white/5 p-8 rounded-2xl hover:border-success/50 transition-colors group relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-success/5 rounded-full blur-3xl group-hover:bg-success/20 transition-colors" />
-          <div className="w-12 h-12 bg-success/10 rounded-sm flex items-center justify-center mb-6 group-hover:box-shadow-neon-cyan transition-all">
+          <div className="w-12 h-12 bg-success/10 rounded-xl flex items-center justify-center mb-6 group-hover:box-shadow-neon-cyan transition-all">
             <ShieldAlert className="w-6 h-6 text-success" />
           </div>
           <h3 className="text-xl font-mono font-bold text-white mb-3">
@@ -108,9 +108,9 @@ export const Home: React.FC<{ setActivePage: (p: string) => void }> = ({
         </div>
 
         {/* Feature 3 */}
-        <div className="bg-card border border-white/5 p-8 rounded-sm hover:border-secondary/50 transition-colors group relative overflow-hidden">
+        <div className="bg-card border border-white/5 p-8 rounded-2xl hover:border-secondary/50 transition-colors group relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-full blur-3xl group-hover:bg-secondary/20 transition-colors" />
-          <div className="w-12 h-12 bg-secondary/10 rounded-sm flex items-center justify-center mb-6 group-hover:box-shadow-neon-cyan transition-all">
+          <div className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center mb-6 group-hover:box-shadow-neon-cyan transition-all">
             <Terminal className="w-6 h-6 text-secondary" />
           </div>
           <h3 className="text-xl font-mono font-bold text-white mb-3">

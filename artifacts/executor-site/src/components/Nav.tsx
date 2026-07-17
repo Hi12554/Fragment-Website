@@ -29,7 +29,7 @@ export const Nav: React.FC<NavProps> = ({ activePage, setActivePage }) => {
             className="flex-shrink-0 cursor-pointer flex items-center gap-2"
             onClick={() => setActivePage("Home")}
           >
-            <div className="w-8 h-8 bg-primary rounded-sm flex items-center justify-center box-shadow-neon-purple font-mono font-bold text-white">
+            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center box-shadow-neon-purple font-mono font-bold text-white">
               Z
             </div>
             <span className="font-mono text-xl font-bold tracking-widest text-white text-shadow-neon-purple">
@@ -46,7 +46,7 @@ export const Nav: React.FC<NavProps> = ({ activePage, setActivePage }) => {
                   <button
                     key={item}
                     onClick={() => setActivePage(item)}
-                    className={`relative px-4 py-2 rounded-sm text-sm font-medium font-mono uppercase tracking-wider transition-colors ${
+                    className={`relative px-4 py-2 rounded-lg text-sm font-medium font-mono uppercase tracking-wider transition-colors ${
                       isActive
                         ? "text-primary"
                         : "text-gray-400 hover:text-white"
@@ -75,7 +75,7 @@ export const Nav: React.FC<NavProps> = ({ activePage, setActivePage }) => {
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-sm text-gray-400 hover:text-white hover:bg-white/5 focus:outline-none"
+              className="inline-flex items-center justify-center p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 focus:outline-none"
             >
               {isOpen ? (
                 <X className="h-6 w-6" />
@@ -106,7 +106,7 @@ export const Nav: React.FC<NavProps> = ({ activePage, setActivePage }) => {
                       setActivePage(item);
                       setIsOpen(false);
                     }}
-                    className={`block w-full text-left px-3 py-3 rounded-sm text-base font-mono uppercase tracking-wider ${
+                    className={`block w-full text-left px-3 py-3 rounded-lg text-base font-mono uppercase tracking-wider ${
                       isActive
                         ? "bg-primary/10 text-primary border-l-2 border-primary box-shadow-neon-purple"
                         : "text-gray-400 hover:text-white hover:bg-white/5 border-l-2 border-transparent"

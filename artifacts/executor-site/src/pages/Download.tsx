@@ -25,7 +25,7 @@ export const Download: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
         {/* Main Installer */}
-        <div className="bg-card border border-primary/30 p-8 rounded-sm relative overflow-hidden flex flex-col items-center text-center group">
+        <div className="bg-card border border-primary/30 p-8 rounded-2xl relative overflow-hidden flex flex-col items-center text-center group">
           <div className="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-colors" />
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-50" />
 
@@ -47,13 +47,13 @@ export const Download: React.FC = () => {
             </div>
           </div>
 
-          <button className="w-full py-4 bg-primary text-white font-mono font-bold uppercase tracking-widest hover:bg-primary/90 transition-colors box-shadow-neon-purple mt-auto">
+          <button className="w-full py-4 bg-primary text-white font-mono font-bold uppercase tracking-widest hover:bg-primary/90 transition-colors box-shadow-neon-purple mt-auto rounded-xl">
             Download Installer
           </button>
         </div>
 
         {/* Bootstrapper ZIP */}
-        <div className="bg-card border border-secondary/30 p-8 rounded-sm relative overflow-hidden flex flex-col items-center text-center group">
+        <div className="bg-card border border-secondary/30 p-8 rounded-2xl relative overflow-hidden flex flex-col items-center text-center group">
           <div className="absolute inset-0 bg-secondary/5 group-hover:bg-secondary/10 transition-colors" />
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-secondary to-transparent opacity-50" />
 
@@ -75,14 +75,14 @@ export const Download: React.FC = () => {
             </div>
           </div>
 
-          <button className="w-full py-4 bg-transparent border-2 border-secondary text-secondary hover:bg-secondary/10 font-mono font-bold uppercase tracking-widest transition-colors mt-auto">
+          <button className="w-full py-4 bg-transparent border-2 border-secondary text-secondary hover:bg-secondary/10 font-mono font-bold uppercase tracking-widest transition-colors mt-auto rounded-xl">
             Download ZIP
           </button>
         </div>
       </div>
 
       {/* Warning */}
-      <div className="bg-[#1a1400] border border-amber-500/50 rounded-sm p-4 mb-12 flex items-start gap-4">
+      <div className="bg-[#1a1400] border border-amber-500/50 rounded-2xl p-4 mb-12 flex items-start gap-4">
         <AlertTriangle className="w-6 h-6 text-amber-500 flex-shrink-0 mt-1" />
         <div>
           <h4 className="text-amber-500 font-mono font-bold mb-1">
@@ -98,7 +98,7 @@ export const Download: React.FC = () => {
       </div>
 
       {/* Instructions */}
-      <div className="bg-card border border-white/10 rounded-sm overflow-hidden">
+      <div className="bg-card border border-white/10 rounded-2xl overflow-hidden">
         <div className="bg-black/40 px-6 py-4 border-b border-white/10 flex items-center gap-3">
           <TermIcon className="w-5 h-5 text-gray-400" />
           <h3 className="font-mono font-bold text-white">

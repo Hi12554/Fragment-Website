@@ -59,7 +59,7 @@ export const Status: React.FC = () => {
           </p>
         </div>
 
-        <div className="bg-success/10 border border-success/30 px-6 py-3 rounded-sm flex items-center gap-3">
+        <div className="bg-success/10 border border-success/30 px-6 py-3 rounded-full flex items-center gap-3">
           <div className="w-3 h-3 rounded-full bg-success box-shadow-neon-green animate-pulse" />
           <span className="font-mono font-bold text-success text-shadow-neon-green tracking-wider">
             ALL SYSTEMS OPERATIONAL
@@ -74,11 +74,11 @@ export const Status: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.1 }}
             key={service.name}
-            className="bg-card border border-white/5 rounded-sm p-6"
+            className="bg-card border border-white/5 rounded-2xl p-6"
           >
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
               <div className="flex items-center gap-4">
-                <div className="p-3 bg-background rounded-sm border border-white/5">
+                <div className="p-3 bg-background rounded-xl border border-white/5">
                   <service.icon className="w-6 h-6 text-gray-400" />
                 </div>
                 <div>
@@ -105,7 +105,7 @@ export const Status: React.FC = () => {
               {service.history.map((block, i) => (
                 <div
                   key={i}
-                  className={`flex-1 rounded-sm ${
+                  className={`flex-1 rounded-md ${
                     block.status === "up"
                       ? "bg-success/80 hover:bg-success transition-colors cursor-pointer"
                       : "bg-amber-500/80 hover:bg-amber-500 transition-colors cursor-pointer"
@@ -124,7 +124,7 @@ export const Status: React.FC = () => {
         ))}
       </div>
 
-      <div className="mt-12 bg-[#0A0A0E] border border-white/5 p-6 rounded-sm text-center">
+      <div className="mt-12 bg-[#0A0A0E] border border-white/5 p-6 rounded-2xl text-center">
         <p className="font-mono text-sm text-gray-400">
           Experiencing issues not listed here? Join our Discord server and check
           the <span className="text-primary">#announcements</span> channel.

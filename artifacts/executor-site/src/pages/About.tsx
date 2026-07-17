@@ -62,7 +62,7 @@ export const About: React.FC = () => {
               <div className="flex items-center justify-center w-10 h-10 rounded-full border border-white/10 bg-background text-primary shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-[0_0_10px_rgba(168,85,247,0.2)] z-10">
                 <div className="w-2 h-2 rounded-full bg-primary" />
               </div>
-              <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-card border border-white/5 p-4 rounded-sm">
+              <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-card border border-white/5 p-4 rounded-xl">
                 <div className="flex items-center justify-between mb-1">
                   <h3 className="font-mono font-bold text-white">
                     {item.title}
@@ -83,7 +83,7 @@ export const About: React.FC = () => {
           WHY IT'S SAFE
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-card p-6 border border-white/5 hover:border-primary/30 transition-colors rounded-sm group">
+          <div className="bg-card p-6 border border-white/5 hover:border-primary/30 transition-colors rounded-2xl group">
             <EyeOff className="w-8 h-8 text-primary mb-4 group-hover:scale-110 transition-transform" />
             <h3 className="font-mono font-bold text-white mb-2">
               Memory Obfuscation
@@ -94,7 +94,7 @@ export const About: React.FC = () => {
               needs them.
             </p>
           </div>
-          <div className="bg-card p-6 border border-white/5 hover:border-success/30 transition-colors rounded-sm group">
+          <div className="bg-card p-6 border border-white/5 hover:border-success/30 transition-colors rounded-2xl group">
             <Crosshair className="w-8 h-8 text-success mb-4 group-hover:scale-110 transition-transform" />
             <h3 className="font-mono font-bold text-white mb-2">
               Kernel-Level Hooks
@@ -104,7 +104,7 @@ export const About: React.FC = () => {
               client from ever seeing our threads or allocated memory pages.
             </p>
           </div>
-          <div className="bg-card p-6 border border-white/5 hover:border-secondary/30 transition-colors rounded-sm group">
+          <div className="bg-card p-6 border border-white/5 hover:border-secondary/30 transition-colors rounded-2xl group">
             <Cpu className="w-8 h-8 text-secondary mb-4 group-hover:scale-110 transition-transform" />
             <h3 className="font-mono font-bold text-white mb-2">
               Stateless Execution
@@ -115,7 +115,7 @@ export const About: React.FC = () => {
               reboot.
             </p>
           </div>
-          <div className="bg-card p-6 border border-white/5 hover:border-accent/30 transition-colors rounded-sm group">
+          <div className="bg-card p-6 border border-white/5 hover:border-accent/30 transition-colors rounded-2xl group">
             <Code className="w-8 h-8 text-accent mb-4 group-hover:scale-110 transition-transform" />
             <h3 className="font-mono font-bold text-white mb-2">
               Dynamic Offsets

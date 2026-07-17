@@ -87,11 +87,11 @@ export const Credits: React.FC = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: mIdx * 0.1 }}
-                  className="bg-card border border-white/5 p-6 rounded-sm hover:border-white/20 transition-colors group"
+                  className="bg-card border border-white/5 p-6 rounded-2xl hover:border-white/20 transition-colors group"
                 >
                   <div className="flex items-center gap-4 mb-4">
                     <div
-                      className={`w-12 h-12 rounded-sm border flex items-center justify-center font-mono font-bold text-lg ${member.color} transition-all duration-300 group-hover:scale-110`}
+                      className={`w-12 h-12 rounded-xl border flex items-center justify-center font-mono font-bold text-lg ${member.color} transition-all duration-300 group-hover:scale-110`}
                     >
                       {member.name.charAt(0).toUpperCase()}
                     </div>

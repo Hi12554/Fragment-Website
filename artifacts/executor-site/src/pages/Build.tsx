@@ -69,7 +69,7 @@ export const Build: React.FC = () => {
     >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Configuration Form */}
-        <div className="bg-card border border-white/10 rounded-sm p-6 shadow-xl">
+        <div className="bg-card border border-white/10 rounded-2xl p-6 shadow-xl">
           <div className="flex items-center gap-3 mb-6 border-b border-white/10 pb-4">
             <Cpu className="w-6 h-6 text-primary" />
             <h2 className="text-xl font-mono font-bold text-white tracking-widest">
@@ -87,7 +87,7 @@ export const Build: React.FC = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 disabled={isBuilding || buildComplete}
-                className="w-full bg-[#0D0D11] border border-secondary/50 focus:border-secondary focus:box-shadow-neon-cyan outline-none rounded-sm px-4 py-3 text-white font-mono transition-all disabled:opacity-50"
+                className="w-full bg-[#0D0D11] border border-secondary/50 focus:border-secondary focus:box-shadow-neon-cyan outline-none rounded-xl px-4 py-3 text-white font-mono transition-all disabled:opacity-50"
                 placeholder="MyExecutor"
               />
             </div>
@@ -100,7 +100,7 @@ export const Build: React.FC = () => {
                 value={theme}
                 onChange={(e) => setTheme(e.target.value)}
                 disabled={isBuilding || buildComplete}
-                className="w-full bg-[#0D0D11] border border-white/20 focus:border-primary outline-none rounded-sm px-4 py-3 text-white font-mono appearance-none disabled:opacity-50"
+                className="w-full bg-[#0D0D11] border border-white/20 focus:border-primary outline-none rounded-xl px-4 py-3 text-white font-mono appearance-none disabled:opacity-50"
               >
                 <option value="purple">Neon Purple (Default)</option>
                 <option value="cyan">Cyber Cyan</option>
@@ -125,7 +125,7 @@ export const Build: React.FC = () => {
             <button
               onClick={startBuild}
               disabled={isBuilding || buildComplete || !name}
-              className="w-full mt-4 py-4 bg-primary text-white font-mono font-bold uppercase tracking-widest disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-all box-shadow-neon-purple flex items-center justify-center gap-2"
+              className="w-full mt-4 py-4 bg-primary text-white font-mono font-bold uppercase tracking-widest disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-all box-shadow-neon-purple flex items-center justify-center gap-2 rounded-xl"
             >
               <Cpu className="w-5 h-5" />
               {isBuilding
@@ -138,7 +138,7 @@ export const Build: React.FC = () => {
         </div>
 
         {/* Terminal Output */}
-        <div className="bg-[#0A0A0E] border border-white/10 rounded-sm overflow-hidden flex flex-col relative h-[500px]">
+        <div className="bg-[#0A0A0E] border border-white/10 rounded-2xl overflow-hidden flex flex-col relative h-[500px]">
           {/* Progress bar overlay */}
           <div className="absolute top-0 left-0 right-0 h-1 bg-white/5 z-20">
             <div
@@ -201,7 +201,7 @@ export const Build: React.FC = () => {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="absolute bottom-6 left-6 right-6 bg-[#16161F]/90 backdrop-blur border border-success box-shadow-neon-green p-4 rounded-sm z-30 flex items-center justify-between"
+                className="absolute bottom-6 left-6 right-6 bg-[#16161F]/90 backdrop-blur border border-success box-shadow-neon-green p-4 rounded-xl z-30 flex items-center justify-between"
               >
                 <div>
                   <div className="font-mono font-bold text-success">
@@ -218,7 +218,7 @@ export const Build: React.FC = () => {
                     setLogs([]);
                     setProgress(0);
                   }}
-                  className="px-4 py-2 bg-success/20 text-success border border-success hover:bg-success hover:text-black font-mono font-bold text-sm transition-colors flex items-center gap-2"
+                  className="px-4 py-2 bg-success/20 text-success border border-success hover:bg-success hover:text-black font-mono font-bold text-sm transition-colors flex items-center gap-2 rounded-lg"
                 >
                   <Download className="w-4 h-4" /> DOWNLOAD
                 </button>
