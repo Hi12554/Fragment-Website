@@ -31,7 +31,7 @@ export const Home: React.FC<{ setActivePage: (p: string) => void }> = ({
           transition={{ duration: 0.5, delay: 0.1 }}
           className="text-7xl md:text-9xl font-mono font-bold text-white text-shadow-neon-purple tracking-tighter"
         >
-          ZENON
+          FRAGMENT
         </motion.h1>
 
         <motion.p
@@ -117,7 +117,7 @@ export const Home: React.FC<{ setActivePage: (p: string) => void }> = ({
             Full Customization
           </h3>
           <p className="text-muted-foreground leading-relaxed">
-            Build your own executor skin with the Zenon API. Unlimited UI
+            Build your own executor skin with the Fragment API. Unlimited UI
             themes, custom bootstrapper, and white-labeling.
           </p>
         </div>

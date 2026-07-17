@@ -89,7 +89,7 @@ export const Download: React.FC = () => {
             ⚠ ANTIVIRUS FALSE POSITIVE
           </h4>
           <p className="text-amber-500/80 text-sm">
-            Due to the nature of process injection, Zenon may be flagged by
+            Due to the nature of process injection, Fragment may be flagged by
             Windows Defender or other AV software. Disable real-time protection
             temporarily during installation. We do not modify persistent system
             files.
@@ -121,7 +121,7 @@ export const Download: React.FC = () => {
             <p>
               Launch{" "}
               <span className="text-white bg-white/10 px-1 py-0.5 rounded">
-                Zenon.exe
+                Fragment.exe
               </span>{" "}
               and enter your license key when prompted.
             </p>

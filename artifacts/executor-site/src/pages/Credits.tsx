@@ -22,25 +22,25 @@ const TEAM = [
       {
         name: "velvet.exe",
         role: "UI/UX Lead",
-        desc: "Designed the Zenon interface and brand system from scratch.",
+        desc: "Designed the Fragment interface and brand system from scratch.",
         color:
           "border-pink-500 text-pink-500 bg-pink-500/10 shadow-[0_0_15px_rgba(236,72,153,0.3)]",
       },
     ],
   },
   {
-    category: "ZENON API CONTRIBUTORS",
+    category: "FRAGMENT API CONTRIBUTORS",
     members: [
       {
         name: "phantom_api",
         role: "API Core",
-        desc: "Built the Zenon scripting API and Lua 5.4 runtime bridge.",
+        desc: "Built the Fragment scripting API and Lua 5.4 runtime bridge.",
         color: "border-success text-success bg-success/10",
       },
       {
         name: "nullref",
         role: "SDK Developer",
-        desc: "Authored the public Zenon SDK and developer documentation.",
+        desc: "Authored the public Fragment SDK and developer documentation.",
         color: "border-success text-success bg-success/10",
       },
     ],

@@ -17,7 +17,7 @@ const SERVICES = [
     history: generateHistory(-1),
   },
   {
-    name: "Zenon API Endpoint",
+    name: "Fragment API Endpoint",
     icon: Server,
     uptime: "99.97%",
     latency: "45ms avg",

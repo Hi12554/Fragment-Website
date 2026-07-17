@@ -3,11 +3,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Cpu, Terminal as TermIcon, Download, Check } from "lucide-react";
 
 const LOG_MESSAGES = [
-  { time: 1000, text: "Initializing Zenon build environment..." },
-  { time: 2000, text: "Fetching Zenon API v3.1..." },
+  { time: 1000, text: "Initializing Fragment build environment..." },
+  { time: 2000, text: "Fetching Fragment API v3.1..." },
   { time: 5000, text: "Injecting dependencies..." },
   { time: 8000, text: "Compiling [NAME]_executor.exe..." },
-  { time: 12000, text: "Linking Zenon API wrapper..." },
+  { time: 12000, text: "Linking Fragment API wrapper..." },
   { time: 15000, text: "Applying anti-detection patches..." },
   { time: 18000, text: "Obfuscating binary..." },
   { time: 22000, text: "Running integrity checks..." },
@@ -114,7 +114,7 @@ export const Build: React.FC = () => {
                   <Check className="w-4 h-4 text-primary absolute" />
                 </div>
                 <span className="font-mono text-sm text-white">
-                  Inject Zenon API Wrapper (.dll)
+                  Inject Fragment API Wrapper (.dll)
                 </span>
                 <span className="text-xs text-gray-500 font-sans ml-auto">
                   (Required)
@@ -150,15 +150,15 @@ export const Build: React.FC = () => {
           <div className="bg-[#16161F] px-4 py-3 border-b border-white/10 flex items-center gap-3 z-20">
             <TermIcon className="w-4 h-4 text-gray-500" />
             <span className="font-mono text-xs text-gray-500">
-              zenon_compiler_v4.exe
+              fragment_compiler_v4.exe
             </span>
           </div>
 
           <div className="p-4 flex-1 overflow-y-auto font-mono text-sm scanlines text-success/90 z-10 relative">
             <div className="space-y-2">
-              <div className="text-gray-500">Zenon Build Tools (v4.2.1)</div>
+              <div className="text-gray-500">Fragment Build Tools (v4.2.1)</div>
               <div className="text-gray-500 mb-4">
-                Copyright (c) 2024 Zenon Team. All rights reserved.
+                Copyright (c) 2024 Fragment Team. All rights reserved.
               </div>
 
               <AnimatePresence>

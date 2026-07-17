@@ -54,7 +54,7 @@ export const Socials: React.FC = () => {
         </h2>
         <p className="text-muted-foreground max-w-xl mx-auto">
           Connect with thousands of developers, share scripts, get support, and
-          stay updated on the latest Zenon features.
+          stay updated on the latest Fragment features.
         </p>
       </div>
 

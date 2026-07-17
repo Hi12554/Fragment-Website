@@ -29,11 +29,13 @@ export const Nav: React.FC<NavProps> = ({ activePage, setActivePage }) => {
             className="flex-shrink-0 cursor-pointer flex items-center gap-2"
             onClick={() => setActivePage("Home")}
           >
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center box-shadow-neon-purple font-mono font-bold text-white">
-              Z
-            </div>
+            <img
+              src="/attached_assets/Fragment_1784312093756.jpg"
+              alt="Fragment"
+              className="w-8 h-8 rounded-lg object-cover box-shadow-neon-purple"
+            />
             <span className="font-mono text-xl font-bold tracking-widest text-white text-shadow-neon-purple">
-              ZENON
+              FRAGMENT
             </span>
           </div>
 

@@ -14,7 +14,7 @@ export const About: React.FC = () => {
           OUR MISSION
         </h2>
         <p className="text-lg text-muted-foreground leading-relaxed font-sans">
-          Zenon was built for developers and power users who demand performance,
+          Fragment was built for developers and power users who demand performance,
           stability, and creative freedom in Roblox scripting. We saw a
           landscape cluttered with malware-ridden, unstable executors and
           decided to build something different: a surgical, professional-grade
@@ -32,7 +32,7 @@ export const About: React.FC = () => {
             {
               year: "2022",
               title: "Initial Release",
-              desc: "Zenon v1 launches as a private prototype for select developers.",
+              desc: "Fragment v1 launches as a private prototype for select developers.",
             },
             {
               year: "2023",
@@ -41,7 +41,7 @@ export const About: React.FC = () => {
             },
             {
               year: "2024",
-              title: "Zenon API Launch",
+              title: "Fragment API Launch",
               desc: "1M executions daily. Opened the API to allow custom UI wrappers.",
             },
             {
@@ -110,7 +110,7 @@ export const About: React.FC = () => {
               Stateless Execution
             </h3>
             <p className="text-sm text-muted-foreground">
-              Zenon operates entirely in volatile memory. No persistent files
+              Fragment operates entirely in volatile memory. No persistent files
               are dropped into the game directory, leaving zero trace after
               reboot.
             </p>
