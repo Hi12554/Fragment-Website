@@ -19,12 +19,12 @@ export const Download: React.FC = () => {
           DOWNLOAD
         </h2>
         <p className="text-muted-foreground">
-          Select your preferred installation method below.
+          Fragment — choose your preferred API integration below.
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-        {/* Main Installer */}
+        {/* Velocity API */}
         <div className="bg-card border border-primary/30 p-8 rounded-2xl relative overflow-hidden flex flex-col items-center text-center group">
           <div className="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-colors" />
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-50" />
@@ -33,11 +33,12 @@ export const Download: React.FC = () => {
             <DownloadCloud className="w-8 h-8 text-primary" />
           </div>
 
-          <h3 className="text-2xl font-mono font-bold text-white mb-2">
-            Installer (.exe)
+          <h3 className="text-2xl font-mono font-bold text-white mb-1">
+            Velocity API
           </h3>
+          <p className="text-xs font-mono text-primary/70 mb-4 tracking-widest uppercase">Fragment × Velocity</p>
           <p className="text-muted-foreground mb-6">
-            Automated setup, dependencies, and auto-updater included.
+            High-performance injection engine. Full Lua 5.4 support with JIT and auto-updater included.
           </p>
 
           <div className="font-mono text-xs text-gray-500 mb-6 bg-black/50 px-3 py-2 rounded">
@@ -48,11 +49,11 @@ export const Download: React.FC = () => {
           </div>
 
           <button className="w-full py-4 bg-primary text-white font-mono font-bold uppercase tracking-widest hover:bg-primary/90 transition-colors box-shadow-neon-purple mt-auto rounded-xl">
-            Download Installer
+            Download Velocity API
           </button>
         </div>
 
-        {/* Bootstrapper ZIP */}
+        {/* Xeno API */}
         <div className="bg-card border border-secondary/30 p-8 rounded-2xl relative overflow-hidden flex flex-col items-center text-center group">
           <div className="absolute inset-0 bg-secondary/5 group-hover:bg-secondary/10 transition-colors" />
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-secondary to-transparent opacity-50" />
@@ -61,11 +62,12 @@ export const Download: React.FC = () => {
             <FileArchive className="w-8 h-8 text-secondary" />
           </div>
 
-          <h3 className="text-2xl font-mono font-bold text-white mb-2">
-            Bootstrapper (.zip)
+          <h3 className="text-2xl font-mono font-bold text-white mb-1">
+            Xeno API
           </h3>
+          <p className="text-xs font-mono text-secondary/70 mb-4 tracking-widest uppercase">Fragment × Xeno</p>
           <p className="text-muted-foreground mb-6">
-            Portable version. Extract and run. No installation required.
+            Lightweight portable build. Extract and run — no installation required. Zero footprint.
           </p>
 
           <div className="font-mono text-xs text-gray-500 mb-6 bg-black/50 px-3 py-2 rounded">
@@ -76,7 +78,7 @@ export const Download: React.FC = () => {
           </div>
 
           <button className="w-full py-4 bg-transparent border-2 border-secondary text-secondary hover:bg-secondary/10 font-mono font-bold uppercase tracking-widest transition-colors mt-auto rounded-xl">
-            Download ZIP
+            Download Xeno API
           </button>
         </div>
       </div>
