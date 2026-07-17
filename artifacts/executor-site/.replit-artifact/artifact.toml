@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "Executor Site"
+version = "1.0.0"
+id = "artifacts/executor-site"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18106
+
+[services.development]
+run = "pnpm --filter @workspace/executor-site run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/executor-site", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/executor-site/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18106"
+BASE_PATH = "/"

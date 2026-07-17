@@ -1,0 +1,37 @@
+Act as a senior full-stack developer. Build a complete, responsive, multi-page Roblox Executor website. The site must feature a unified, ultra-modern dark cyberpunk aesthetic using dark grays (#0D0D11), deep charcoals (#16161F), and vibrant neon purple/cyan accents. 
+
+Create a multi-page setup (or a seamless Single Page Application using clean JavaScript tab/page switching to keep it fast) containing the following 7 pages:
+
+1. HOME PAGE
+- A massive hero section with a glowing title, a short tagline, a "Status: Undetected" live neon-green badge, and a prominent "Get Started" CTA button.
+- A 3-column features grid showcasing high performance, safety, and customization.
+
+2. DOWNLOAD PAGE
+- A secure-looking card containing a large "Download Installer (.exe)" button.
+- A secondary section for a "Bootstrapper (Zip)" download option.
+- Step-by-step installation instructions with clean text alerts (e.g., "Disable real-time protection if flagged").
+
+3. ABOUT PAGE
+- A clean, text-focused layout explaining the mission of the software, its stability milestones, and why it bypasses modern Roblox anti-cheat (Hyperion) safely.
+
+4. BUILD PAGE (Zenon API Integration)
+- A highly interactive dashboard styled like a developer workspace.
+- Include a text input field for "Custom Executor Name" and a dropdown selector for "UI Theme Color" (Neon Red, Cyan, Purple).
+- Include a static checkbox pre-selected for "Inject Zenon API Wrapper (.dll)".
+- A prominent "Compile & Generate Custom Build" button. 
+- Use Vanilla JavaScript so when the user clicks "Compile", a visual CSS progress bar animations from 0% to 100% over 4 seconds, displaying live status logs (e.g., "Fetching Zenon API...", "Injecting dependencies...", "Build Successful!"). After 100%, show a mock download link for their custom file.
+
+5. UPTIME / STATUS PAGE
+- A dedicated dashboard showing the system health of the executor infrastructure.
+- Include live visual uptime bars (similar to UptimeRobot) showing 99.9% operational status for: "Exploit Injection Core", "Zenon API Endpoint", and "Key Authentication Server".
+
+6. SOCIALS PAGE
+- A beautifully formatted links dashboard containing stylish, hover-animated cards connecting to Discord, YouTube, Twitter/X, and TikTok.
+
+7. CREDITS PAGE
+- A grid of cleanly designed profile cards acknowledging the core development team, the Zenon API contributors, and UI designers.
+
+TECHNICAL REQUIREMENTS:
+- Navigation: A fixed, sticky top navigation bar with a responsive hamburger menu for mobile screens. The nav bar must smoothly switch between these 7 views without broken links.
+- Code Structure: Use clean, semantic HTML5, modern CSS Grid/Flexbox for perfect responsiveness, and vanilla JavaScript for all visual animations, page routing, and the Build page logic. 
+- Do not use complex external backend databases yet; mock all live actions (like compiling and uptime) realistically using JavaScript.
