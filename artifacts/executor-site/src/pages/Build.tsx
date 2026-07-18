@@ -79,7 +79,7 @@ export const Build: React.FC = () => {
                     href={file.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`w-full py-4 font-mono font-bold uppercase tracking-widest rounded-xl text-center block transition-all mt-auto ${file.accentClass.replace("text-", "bg-")} text-[#0D0D11] hover:opacity-90 ${file.glowClass}`}
+                    className={`w-full py-4 font-mono font-bold uppercase tracking-widest rounded-xl text-center block transition-all mt-auto ${file.accentClass.replace("text-", "bg-")} text-white hover:opacity-90 ${file.glowClass}`}
                   >
                     <DownloadCloud className="inline w-4 h-4 mr-2 -mt-0.5" />
                     Download
