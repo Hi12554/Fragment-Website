@@ -3,10 +3,45 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   DownloadCloud, FileArchive, Terminal as TermIcon,
   AlertTriangle, ChevronDown, ShieldCheck,
-  ExternalLink, Clock, RefreshCw,
+  ExternalLink, Clock, RefreshCw, X, ZoomIn,
 } from "lucide-react";
 import { loadConfig, AdminConfig, ApiConfig, ApiStatus } from "../store/adminStore";
 
+// ── Lightbox ─────────────────────────────────────────────────────────────────
+const Lightbox: React.FC<{ src: string; alt: string; onClose: () => void }> = ({ src, alt, onClose }) => (
+  <AnimatePresence>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm px-4"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.88, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.88, opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        className="relative max-w-4xl w-full max-h-[90vh]"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          onClick={onClose}
+          className="absolute -top-10 right-0 text-gray-400 hover:text-white transition-colors flex items-center gap-1.5 font-mono text-xs"
+        >
+          <X className="w-4 h-4" /> Close
+        </button>
+        <img
+          src={src}
+          alt={alt}
+          className="w-full h-full object-contain rounded-2xl border border-white/10 shadow-2xl"
+        />
+      </motion.div>
+    </motion.div>
+  </AnimatePresence>
+);
+
+// ── Status helpers ────────────────────────────────────────────────────────────
 function StatusBadge({ status }: { status: ApiStatus }) {
   if (status === "up") return null;
   return (
@@ -19,8 +54,8 @@ function StatusBadge({ status }: { status: ApiStatus }) {
 
 function statusDot(status: ApiStatus) {
   return status === "up"
-    ? <span className="inline-block w-2 h-2 rounded-full bg-green-400 shadow-[0_0_6px_rgba(74,222,128,0.8)] mr-1.5" />
-    : <span className="inline-block w-2 h-2 rounded-full bg-amber-400 mr-1.5" />;
+    ? <span className="inline-block w-2 h-2 rounded-full bg-green-400 shadow-[0_0_6px_rgba(74,222,128,0.8)] mr-1.5 flex-shrink-0" />
+    : <span className="inline-block w-2 h-2 rounded-full bg-amber-400 mr-1.5 flex-shrink-0" />;
 }
 
 function statusLabel(status: ApiStatus) {
@@ -37,139 +72,164 @@ const ExecutorCard: React.FC<{
   cfg: ApiConfig;
 }> = ({ name, subtitle, icon: Icon, accentClass, glowClass, cfg }) => {
   const [showReleases, setShowReleases] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+
+  // Latest release = first entry (they're added newest-first in the admin)
+  const latestRelease = cfg.releases?.[0] ?? null;
 
   return (
-    <div className={`bg-card border ${accentClass.replace("text-", "border-")}/30 rounded-2xl relative overflow-hidden flex flex-col`}>
-      <div className={`absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent ${accentClass.replace("text-", "via-")} to-transparent opacity-60`} />
+    <>
+      {lightboxOpen && cfg.previewImage && (
+        <Lightbox
+          src={cfg.previewImage}
+          alt={`${name} preview`}
+          onClose={() => setLightboxOpen(false)}
+        />
+      )}
 
-      <div className="p-7 flex flex-col flex-1">
-        {/* Header */}
-        <div className="flex items-start justify-between mb-5">
-          <div className="flex items-center gap-4">
-            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${accentClass.replace("text-", "bg-")}/15 ${glowClass}`}>
-              <Icon className={`w-7 h-7 ${accentClass}`} />
+      <div className={`bg-card border ${accentClass.replace("text-", "border-")}/30 rounded-2xl relative overflow-hidden flex flex-col`}>
+        <div className={`absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent ${accentClass.replace("text-", "via-")} to-transparent opacity-60`} />
+
+        <div className="p-7 flex flex-col flex-1">
+          {/* Header */}
+          <div className="flex items-start justify-between mb-5">
+            <div className="flex items-center gap-4">
+              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${accentClass.replace("text-", "bg-")}/15 ${glowClass}`}>
+                <Icon className={`w-7 h-7 ${accentClass}`} />
+              </div>
+              <div>
+                <h3 className="text-xl font-mono font-bold text-white">{name}</h3>
+                <p className={`text-xs font-mono tracking-widest uppercase ${accentClass}/70`}>{subtitle}</p>
+              </div>
             </div>
-            <div>
-              <h3 className="text-xl font-mono font-bold text-white">{name}</h3>
-              <p className={`text-xs font-mono tracking-widest uppercase ${accentClass}/70`}>{subtitle}</p>
-            </div>
-          </div>
-          <div className={`flex items-center text-xs font-mono ${cfg.status === "up" ? "text-green-400" : "text-amber-400"}`}>
-            {statusDot(cfg.status)}{statusLabel(cfg.status)}
-          </div>
-        </div>
-
-        <StatusBadge status={cfg.status} />
-
-        {/* Preview image */}
-        {cfg.previewImage && (
-          <div className="rounded-xl overflow-hidden border border-white/10 mb-5 max-h-44">
-            <img
-              src={cfg.previewImage}
-              alt={`${name} preview`}
-              className="w-full h-full object-cover"
-              onError={(e) => (e.currentTarget.parentElement!.style.display = "none")}
-            />
-          </div>
-        )}
-
-        {/* Description */}
-        {cfg.description && (
-          <p className="text-gray-400 text-sm mb-5 leading-relaxed">{cfg.description}</p>
-        )}
-
-        {/* Stats row */}
-        {(cfg.uncPercent || cfg.suncPercent || cfg.supportedVersion) && (
-          <div className="grid grid-cols-3 gap-3 mb-5">
-            {cfg.uncPercent && (
-              <div className="bg-[#0D0D11] rounded-xl px-3 py-2.5 text-center border border-white/5">
-                <div className={`font-mono font-bold text-lg ${accentClass}`}>{cfg.uncPercent}%</div>
-                <div className="text-xs text-gray-500 font-mono mt-0.5">UNC</div>
+            <div className="text-right">
+              <div className={`flex items-center justify-end text-xs font-mono ${cfg.status === "up" ? "text-green-400" : "text-amber-400"}`}>
+                {statusDot(cfg.status)}{statusLabel(cfg.status)}
               </div>
-            )}
-            {cfg.suncPercent && (
-              <div className="bg-[#0D0D11] rounded-xl px-3 py-2.5 text-center border border-white/5">
-                <div className={`font-mono font-bold text-lg ${accentClass}`}>{cfg.suncPercent}%</div>
-                <div className="text-xs text-gray-500 font-mono mt-0.5">sUNC</div>
-              </div>
-            )}
-            {cfg.supportedVersion && (
-              <div className={`bg-[#0D0D11] rounded-xl px-3 py-2.5 text-center border border-white/5 ${!cfg.uncPercent && !cfg.suncPercent ? "col-span-3" : ""}`}>
-                <div className="font-mono font-bold text-sm text-white truncate">{cfg.supportedVersion}</div>
-                <div className="text-xs text-gray-500 font-mono mt-0.5">Roblox ver.</div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* VT scan */}
-        {(cfg.virusTotalUrl || cfg.virusTotalDetections) && (
-          <div className="flex items-center gap-3 mb-5 bg-[#0D0D11] border border-white/5 rounded-xl px-4 py-3">
-            <ShieldCheck className="w-4 h-4 text-green-400 flex-shrink-0" />
-            <div className="flex-1 min-w-0">
-              <p className="text-xs text-gray-400 font-mono">VirusTotal Scan</p>
-              {cfg.virusTotalDetections && (
-                <p className="text-xs font-mono text-green-400 font-bold">{cfg.virusTotalDetections} detections</p>
+              {latestRelease?.version && (
+                <div className="text-xs text-gray-600 font-mono mt-0.5">{latestRelease.version}</div>
               )}
             </div>
-            {cfg.virusTotalUrl && (
-              <a href={cfg.virusTotalUrl} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-white transition-colors flex-shrink-0">
-                <ExternalLink className="w-4 h-4" />
-              </a>
-            )}
           </div>
-        )}
 
-        {/* Download button — always enabled */}
-        <a
-          href={cfg.downloadUrl && cfg.downloadUrl !== "#" ? cfg.downloadUrl : undefined}
-          target={cfg.downloadUrl && cfg.downloadUrl !== "#" ? "_blank" : undefined}
-          rel="noopener noreferrer"
-          className={`w-full py-4 font-mono font-bold uppercase tracking-widest transition-all rounded-xl text-center block mt-auto ${glowClass} ${accentClass.replace("text-", "bg-")} text-white hover:opacity-90`}
-        >
-          <DownloadCloud className="inline w-4 h-4 mr-2 -mt-0.5" />
-          Download {name}
-        </a>
+          <StatusBadge status={cfg.status} />
 
-        {/* Release history */}
-        {cfg.releases && cfg.releases.length > 0 && (
-          <div className="mt-4">
-            <button
-              onClick={() => setShowReleases(!showReleases)}
-              className="flex items-center gap-1.5 text-xs font-mono text-gray-500 hover:text-gray-300 transition-colors w-full justify-center"
+          {/* Preview image — click to expand */}
+          {cfg.previewImage && (
+            <div
+              className="rounded-xl overflow-hidden border border-white/10 mb-5 max-h-44 relative group cursor-zoom-in"
+              onClick={() => setLightboxOpen(true)}
             >
-              <Clock className="w-3.5 h-3.5" />
-              {showReleases ? "Hide" : "Show"} release history ({cfg.releases.length})
-              <ChevronDown className={`w-3.5 h-3.5 transition-transform ${showReleases ? "rotate-180" : ""}`} />
-            </button>
+              <img
+                src={cfg.previewImage}
+                alt={`${name} preview`}
+                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                onError={(e) => (e.currentTarget.parentElement!.style.display = "none")}
+              />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+                <ZoomIn className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-lg" />
+              </div>
+            </div>
+          )}
 
-            <AnimatePresence>
-              {showReleases && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="overflow-hidden mt-3"
-                >
-                  <div className="space-y-2">
-                    {cfg.releases.map((release) => (
-                      <div key={release.id} className="border border-white/10 rounded-xl p-4 bg-[#0D0D11]">
-                        <div className="flex items-center justify-between mb-2">
-                          <span className={`font-mono font-bold text-sm ${accentClass}`}>{release.version}</span>
-                          <span className="text-xs text-gray-500 font-mono">{release.date}</span>
-                        </div>
-                        <p className="text-xs text-gray-400 leading-relaxed whitespace-pre-wrap">{release.changelog}</p>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
+          {/* Description */}
+          {cfg.description && (
+            <p className="text-gray-400 text-sm mb-5 leading-relaxed">{cfg.description}</p>
+          )}
+
+          {/* Stats row */}
+          {(cfg.uncPercent || cfg.suncPercent || cfg.supportedVersion) && (
+            <div className="grid grid-cols-3 gap-3 mb-5">
+              {cfg.uncPercent && (
+                <div className="bg-[#0D0D11] rounded-xl px-3 py-2.5 text-center border border-white/5">
+                  <div className={`font-mono font-bold text-lg ${accentClass}`}>{cfg.uncPercent}%</div>
+                  <div className="text-xs text-gray-500 font-mono mt-0.5">UNC</div>
+                </div>
               )}
-            </AnimatePresence>
-          </div>
-        )}
+              {cfg.suncPercent && (
+                <div className="bg-[#0D0D11] rounded-xl px-3 py-2.5 text-center border border-white/5">
+                  <div className={`font-mono font-bold text-lg ${accentClass}`}>{cfg.suncPercent}%</div>
+                  <div className="text-xs text-gray-500 font-mono mt-0.5">sUNC</div>
+                </div>
+              )}
+              {cfg.supportedVersion && (
+                <div className={`bg-[#0D0D11] rounded-xl px-3 py-2.5 text-center border border-white/5 ${!cfg.uncPercent && !cfg.suncPercent ? "col-span-3" : ""}`}>
+                  <div className="font-mono font-bold text-sm text-white truncate">{cfg.supportedVersion}</div>
+                  <div className="text-xs text-gray-500 font-mono mt-0.5">Roblox ver.</div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* VT scan */}
+          {(cfg.virusTotalUrl || cfg.virusTotalDetections) && (
+            <div className="flex items-center gap-3 mb-5 bg-[#0D0D11] border border-white/5 rounded-xl px-4 py-3">
+              <ShieldCheck className="w-4 h-4 text-green-400 flex-shrink-0" />
+              <div className="flex-1 min-w-0">
+                <p className="text-xs text-gray-400 font-mono">VirusTotal Scan</p>
+                {cfg.virusTotalDetections && (
+                  <p className="text-xs font-mono text-green-400 font-bold">{cfg.virusTotalDetections} detections</p>
+                )}
+              </div>
+              {cfg.virusTotalUrl && (
+                <a href={cfg.virusTotalUrl} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-white transition-colors flex-shrink-0">
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+              )}
+            </div>
+          )}
+
+          {/* Download button — always enabled */}
+          <a
+            href={cfg.downloadUrl && cfg.downloadUrl !== "#" ? cfg.downloadUrl : undefined}
+            target={cfg.downloadUrl && cfg.downloadUrl !== "#" ? "_blank" : undefined}
+            rel="noopener noreferrer"
+            className={`w-full py-4 font-mono font-bold uppercase tracking-widest transition-all rounded-xl text-center block mt-auto ${glowClass} ${accentClass.replace("text-", "bg-")} text-white hover:opacity-90`}
+          >
+            <DownloadCloud className="inline w-4 h-4 mr-2 -mt-0.5" />
+            Download {name}
+          </a>
+
+          {/* Release history */}
+          {cfg.releases && cfg.releases.length > 0 && (
+            <div className="mt-4">
+              <button
+                onClick={() => setShowReleases(!showReleases)}
+                className="flex items-center gap-1.5 text-xs font-mono text-gray-500 hover:text-gray-300 transition-colors w-full justify-center"
+              >
+                <Clock className="w-3.5 h-3.5" />
+                {showReleases ? "Hide" : "Show"} release history ({cfg.releases.length})
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${showReleases ? "rotate-180" : ""}`} />
+              </button>
+
+              <AnimatePresence>
+                {showReleases && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="overflow-hidden mt-3"
+                  >
+                    <div className="space-y-2">
+                      {cfg.releases.map((release) => (
+                        <div key={release.id} className="border border-white/10 rounded-xl p-4 bg-[#0D0D11]">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className={`font-mono font-bold text-sm ${accentClass}`}>{release.version}</span>
+                            <span className="text-xs text-gray-500 font-mono">{release.date}</span>
+                          </div>
+                          <p className="text-xs text-gray-400 leading-relaxed whitespace-pre-wrap">{release.changelog}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

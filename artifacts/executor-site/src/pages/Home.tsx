@@ -1,10 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Terminal, ShieldAlert, Cpu, ArrowRight } from "lucide-react";
+import { Terminal, ShieldAlert, Cpu, ArrowRight, Monitor } from "lucide-react";
 
 export const Home: React.FC<{ setActivePage: (p: string) => void }> = ({
   setActivePage,
 }) => {
+  const [robloxVersion, setRobloxVersion] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch("https://api.weao.xyz/roblox/versions")
+      .then((r) => r.json())
+      .then((data: Record<string, string>) => {
+        // Prefer WindowsPlayer, fall back to first available key
+        const version =
+          data["WindowsPlayer"] ??
+          data["version"] ??
+          Object.values(data)[0] ??
+          null;
+        if (version) setRobloxVersion(String(version));
+      })
+      .catch(() => { /* silently ignore if API is unreachable */ });
+  }, []);
+
   return (
     <div className="min-h-screen pt-24 pb-12 flex flex-col items-center justify-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Hero Section */}
@@ -44,6 +61,19 @@ export const Home: React.FC<{ setActivePage: (p: string) => void }> = ({
           <br className="hidden md:block" />
           <span className="text-white">Undetected. Unstoppable.</span>
         </motion.p>
+
+        {/* Roblox version badge */}
+        {robloxVersion && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.25 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-gray-400"
+          >
+            <Monitor className="w-3.5 h-3.5 text-gray-500" />
+            Roblox {robloxVersion}
+          </motion.div>
+        )}
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -87,8 +117,7 @@ export const Home: React.FC<{ setActivePage: (p: string) => void }> = ({
             Hyper Performance
           </h3>
           <p className="text-muted-foreground leading-relaxed">
-            Sub-50ms injection. Custom Lua 5.4 VM with JIT compilation for
-            maximum execution speed without crashing.
+            Fast, stable, and reliable script execution.
           </p>
         </div>
 
@@ -102,8 +131,7 @@ export const Home: React.FC<{ setActivePage: (p: string) => void }> = ({
             Hyperion Safe
           </h3>
           <p className="text-muted-foreground leading-relaxed">
-            Advanced memory obfuscation bypasses Roblox's Byfron/Hyperion
-            anti-cheat. Zero detected bans in 2024.
+            Bypasses Roblox's Byfron/Hyperion anti-cheat.
           </p>
         </div>
 
