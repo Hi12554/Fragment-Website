@@ -1,57 +1,55 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Activity, Zap, FileCode } from "lucide-react";
-import { getConfig, AdminConfig, ApiStatus, getStatusLabel } from "../store/adminStore";
-
-const generateHistory = (status: ApiStatus) => {
-  return Array.from({ length: 30 }).map((_, i) => ({
-    status: status === "up" ? "up" : i > 25 ? "down" : "up",
-  }));
-};
+import { loadConfig, AdminConfig, ApiStatus, getStatusLabel } from "../store/adminStore";
 
 function statusColor(s: ApiStatus) {
-  if (s === "up") return "text-success border-success/30 bg-success/10";
-  if (s === "down") return "text-red-400 border-red-500/30 bg-red-500/10";
-  return "text-amber-400 border-amber-500/30 bg-amber-500/10";
+  return s === "up"
+    ? "text-success border-success/30 bg-success/10"
+    : "text-amber-400 border-amber-500/30 bg-amber-500/10";
 }
 
 function dotColor(s: ApiStatus) {
-  if (s === "up") return "bg-success box-shadow-neon-green";
-  if (s === "down") return "bg-red-500";
-  return "bg-amber-500";
+  return s === "up" ? "bg-success box-shadow-neon-green" : "bg-amber-500";
 }
 
 function blockColor(s: ApiStatus) {
-  if (s === "up") return "bg-success/80 hover:bg-success";
-  if (s === "down") return "bg-red-500/80 hover:bg-red-500";
-  return "bg-amber-500/80 hover:bg-amber-500";
+  return s === "up" ? "bg-success/80 hover:bg-success" : "bg-amber-500/80 hover:bg-amber-500";
 }
 
 function overallBadge(vel: ApiStatus, xen: ApiStatus) {
   if (vel === "up" && xen === "up")
-    return { label: "ALL SYSTEMS OPERATIONAL", cls: "bg-success/10 border-success/30 text-success", dot: "bg-success box-shadow-neon-green" };
-  if (vel === "down" || xen === "down")
-    return { label: "SERVICE DISRUPTION", cls: "bg-red-500/10 border-red-500/30 text-red-400", dot: "bg-red-500" };
-  return { label: "PARTIAL DISRUPTION", cls: "bg-amber-500/10 border-amber-500/30 text-amber-400", dot: "bg-amber-500" };
+    return {
+      label: "ALL SYSTEMS OPERATIONAL",
+      cls: "bg-success/10 border-success/30 text-success",
+      dot: "bg-success box-shadow-neon-green",
+    };
+  return {
+    label: "PARTIAL DISRUPTION",
+    cls: "bg-amber-500/10 border-amber-500/30 text-amber-400",
+    dot: "bg-amber-500",
+  };
 }
 
 export const Status: React.FC = () => {
   const [lastChecked, setLastChecked] = useState<Date>(new Date());
-  const [cfg, setCfg] = useState<AdminConfig>(getConfig);
+  const [cfg, setCfg] = useState<AdminConfig | null>(null);
 
   useEffect(() => {
+    loadConfig().then((c) => { setCfg(c); setLastChecked(new Date()); });
     const interval = setInterval(() => {
-      setLastChecked(new Date());
-      setCfg(getConfig());
+      loadConfig().then((c) => { setCfg(c); setLastChecked(new Date()); });
     }, 30000);
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    const refresh = () => setCfg(getConfig());
-    window.addEventListener("focus", refresh);
-    return () => window.removeEventListener("focus", refresh);
-  }, []);
+  if (!cfg) {
+    return (
+      <div className="min-h-screen pt-24 flex items-center justify-center text-gray-500 font-mono text-sm gap-3">
+        <Activity className="w-4 h-4 animate-pulse" /> Loading status…
+      </div>
+    );
+  }
 
   const services = [
     {
@@ -59,18 +57,20 @@ export const Status: React.FC = () => {
       subtitle: "Fragment × Velocity",
       icon: Zap,
       status: cfg.velocityApi.status,
-      history: generateHistory(cfg.velocityApi.status),
     },
     {
       name: "Xeno API",
       subtitle: "Fragment × Xeno",
       icon: FileCode,
       status: cfg.xenoApi.status,
-      history: generateHistory(cfg.xenoApi.status),
     },
   ];
 
   const badge = overallBadge(cfg.velocityApi.status, cfg.xenoApi.status);
+
+  // 30 blocks all showing current status (no stored history)
+  const history = (status: ApiStatus) =>
+    Array.from({ length: 30 }, () => ({ status }));
 
   return (
     <motion.div
@@ -80,9 +80,7 @@ export const Status: React.FC = () => {
     >
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
         <div>
-          <h2 className="text-3xl font-mono font-bold text-white mb-2">
-            SYSTEM STATUS
-          </h2>
+          <h2 className="text-3xl font-mono font-bold text-white mb-2">SYSTEM STATUS</h2>
           <p className="text-muted-foreground text-sm font-mono flex items-center gap-2">
             <Activity className="w-4 h-4 text-success" />
             Last checked: {lastChecked.toLocaleTimeString()}
@@ -91,19 +89,17 @@ export const Status: React.FC = () => {
 
         <div className={`border px-6 py-3 rounded-full flex items-center gap-3 ${badge.cls}`}>
           <div className={`w-3 h-3 rounded-full animate-pulse ${badge.dot}`} />
-          <span className="font-mono font-bold tracking-wider text-sm">
-            {badge.label}
-          </span>
+          <span className="font-mono font-bold tracking-wider text-sm">{badge.label}</span>
         </div>
       </div>
 
       <div className="space-y-6">
         {services.map((service, idx) => (
           <motion.div
+            key={service.name}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.1 }}
-            key={service.name}
             className="bg-card border border-white/5 rounded-2xl p-6"
           >
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
@@ -112,9 +108,7 @@ export const Status: React.FC = () => {
                   <service.icon className="w-6 h-6 text-gray-400" />
                 </div>
                 <div>
-                  <h3 className="font-mono font-bold text-lg text-white">
-                    {service.name}
-                  </h3>
+                  <h3 className="font-mono font-bold text-lg text-white">{service.name}</h3>
                   <p className="text-xs text-gray-500 font-mono">{service.subtitle}</p>
                 </div>
               </div>
@@ -124,17 +118,13 @@ export const Status: React.FC = () => {
               </div>
             </div>
 
-            {/* History blocks */}
+            {/* 30-day history blocks — all reflect current status, no stored history */}
             <div className="flex justify-between gap-1 w-full h-8">
-              {service.history.map((block, i) => (
+              {history(service.status).map((block, i) => (
                 <div
                   key={i}
-                  className={`flex-1 rounded-md transition-colors cursor-pointer ${
-                    block.status === "up"
-                      ? blockColor(service.status)
-                      : "bg-red-500/80 hover:bg-red-500"
-                  }`}
-                  title={block.status === "up" ? getStatusLabel(service.status) : "Outage"}
+                  className={`flex-1 rounded-md transition-colors cursor-default ${blockColor(block.status)}`}
+                  title={getStatusLabel(block.status)}
                 />
               ))}
             </div>
@@ -149,12 +139,7 @@ export const Status: React.FC = () => {
       <div className="mt-12 bg-[#0A0A0E] border border-white/5 p-6 rounded-2xl text-center">
         <p className="font-mono text-sm text-gray-400">
           Experiencing issues? Join our{" "}
-          <a
-            href="https://discord.gg/VvSK3zUHZP"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-primary hover:underline"
-          >
+          <a href="https://discord.gg/VvSK3zUHZP" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
             Discord server
           </a>{" "}
           and check the <span className="text-primary">#announcements</span> channel.

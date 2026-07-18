@@ -11,7 +11,7 @@ const SINGLETON_ID = "singleton";
 // ── Zod schema for the admin config payload ──────────────────────────────────
 
 const ApiConfigSchema = z.object({
-  status: z.enum(["up", "down", "roblox_downgrade"]),
+  status: z.enum(["up", "down"]),
   uncPercent: z.string(),
   suncPercent: z.string(),
   description: z.string(),

@@ -16,9 +16,8 @@ const labelCls = "block text-xs font-mono text-gray-400 uppercase tracking-wides
 // ── Helpers ──────────────────────────────────────────────────────────────────
 const StatusSelect: React.FC<{ value: ApiStatus; onChange: (v: ApiStatus) => void }> = ({ value, onChange }) => (
   <select value={value} onChange={(e) => onChange(e.target.value as ApiStatus)} className={inputCls + " appearance-none cursor-pointer"}>
-    <option value="up">✅ Operational (Up)</option>
-    <option value="down">🔴 Down</option>
-    <option value="roblox_downgrade">⚠️ Roblox Downgrade Required</option>
+    <option value="up">✅ Operational</option>
+    <option value="down">⚠️ Roblox Downgrade Required</option>
   </select>
 );
 
@@ -314,19 +313,6 @@ export const Admin: React.FC = () => {
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
             {loading ? "Loading…" : "Reload"}
           </button>
-        </div>
-
-        {/* Global version */}
-        <div className="bg-[#16161F] border border-white/5 rounded-2xl p-4 mb-6 flex items-center gap-4">
-          <div className="flex-1">
-            <label className={labelCls}>Global Version Number</label>
-            <input
-              value={config.version}
-              onChange={(e) => set("version", e.target.value)}
-              placeholder="e.g. v4.2.1"
-              className={inputCls}
-            />
-          </div>
         </div>
 
         {/* Tabs */}

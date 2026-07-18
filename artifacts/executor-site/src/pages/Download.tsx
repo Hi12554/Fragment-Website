@@ -2,21 +2,13 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   DownloadCloud, FileArchive, Terminal as TermIcon,
-  AlertTriangle, AlertCircle, ChevronDown, ShieldCheck,
+  AlertTriangle, ChevronDown, ShieldCheck,
   ExternalLink, Clock, RefreshCw,
 } from "lucide-react";
 import { loadConfig, AdminConfig, ApiConfig, ApiStatus } from "../store/adminStore";
 
 function StatusBadge({ status }: { status: ApiStatus }) {
   if (status === "up") return null;
-  if (status === "down") {
-    return (
-      <div className="w-full mb-4 flex items-center gap-2 bg-red-500/10 border border-red-500/40 rounded-xl px-4 py-2 text-red-400 font-mono text-xs">
-        <AlertCircle className="w-4 h-4 flex-shrink-0" />
-        Currently Offline
-      </div>
-    );
-  }
   return (
     <div className="w-full mb-4 flex items-center gap-2 bg-amber-500/10 border border-amber-500/40 rounded-xl px-4 py-2 text-amber-400 font-mono text-xs">
       <ChevronDown className="w-4 h-4 flex-shrink-0" />
@@ -26,15 +18,13 @@ function StatusBadge({ status }: { status: ApiStatus }) {
 }
 
 function statusDot(status: ApiStatus) {
-  if (status === "up") return <span className="inline-block w-2 h-2 rounded-full bg-green-400 shadow-[0_0_6px_rgba(74,222,128,0.8)] mr-1.5" />;
-  if (status === "down") return <span className="inline-block w-2 h-2 rounded-full bg-red-400 mr-1.5" />;
-  return <span className="inline-block w-2 h-2 rounded-full bg-amber-400 mr-1.5" />;
+  return status === "up"
+    ? <span className="inline-block w-2 h-2 rounded-full bg-green-400 shadow-[0_0_6px_rgba(74,222,128,0.8)] mr-1.5" />
+    : <span className="inline-block w-2 h-2 rounded-full bg-amber-400 mr-1.5" />;
 }
 
 function statusLabel(status: ApiStatus) {
-  if (status === "up") return "Operational";
-  if (status === "down") return "Down";
-  return "Downgrade Required";
+  return status === "up" ? "Operational" : "Downgrade Required";
 }
 
 // ── Single executor card ─────────────────────────────────────────────────────
@@ -45,12 +35,11 @@ const ExecutorCard: React.FC<{
   accentClass: string;
   glowClass: string;
   cfg: ApiConfig;
-  version: string;
-}> = ({ name, subtitle, icon: Icon, accentClass, glowClass, cfg, version }) => {
+}> = ({ name, subtitle, icon: Icon, accentClass, glowClass, cfg }) => {
   const [showReleases, setShowReleases] = useState(false);
 
   return (
-    <div className={`bg-card border rounded-2xl relative overflow-hidden flex flex-col ${accentClass.replace("text-", "border-").split(" ")[0]}/30`}>
+    <div className={`bg-card border ${accentClass.replace("text-", "border-")}/30 rounded-2xl relative overflow-hidden flex flex-col`}>
       <div className={`absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent ${accentClass.replace("text-", "via-")} to-transparent opacity-60`} />
 
       <div className="p-7 flex flex-col flex-1">
@@ -65,11 +54,8 @@ const ExecutorCard: React.FC<{
               <p className={`text-xs font-mono tracking-widest uppercase ${accentClass}/70`}>{subtitle}</p>
             </div>
           </div>
-          <div className="text-right">
-            <div className={`flex items-center text-xs font-mono ${cfg.status === "up" ? "text-green-400" : cfg.status === "down" ? "text-red-400" : "text-amber-400"}`}>
-              {statusDot(cfg.status)}{statusLabel(cfg.status)}
-            </div>
-            <div className="text-xs text-gray-600 font-mono mt-0.5">{version}</div>
+          <div className={`flex items-center text-xs font-mono ${cfg.status === "up" ? "text-green-400" : "text-amber-400"}`}>
+            {statusDot(cfg.status)}{statusLabel(cfg.status)}
           </div>
         </div>
 
@@ -78,7 +64,12 @@ const ExecutorCard: React.FC<{
         {/* Preview image */}
         {cfg.previewImage && (
           <div className="rounded-xl overflow-hidden border border-white/10 mb-5 max-h-44">
-            <img src={cfg.previewImage} alt={`${name} preview`} className="w-full h-full object-cover" onError={(e) => (e.currentTarget.parentElement!.style.display = "none")} />
+            <img
+              src={cfg.previewImage}
+              alt={`${name} preview`}
+              className="w-full h-full object-cover"
+              onError={(e) => (e.currentTarget.parentElement!.style.display = "none")}
+            />
           </div>
         )}
 
@@ -103,7 +94,7 @@ const ExecutorCard: React.FC<{
               </div>
             )}
             {cfg.supportedVersion && (
-              <div className="bg-[#0D0D11] rounded-xl px-3 py-2.5 text-center border border-white/5 col-span-3 sm:col-span-1">
+              <div className={`bg-[#0D0D11] rounded-xl px-3 py-2.5 text-center border border-white/5 ${!cfg.uncPercent && !cfg.suncPercent ? "col-span-3" : ""}`}>
                 <div className="font-mono font-bold text-sm text-white truncate">{cfg.supportedVersion}</div>
                 <div className="text-xs text-gray-500 font-mono mt-0.5">Roblox ver.</div>
               </div>
@@ -129,23 +120,18 @@ const ExecutorCard: React.FC<{
           </div>
         )}
 
-        {/* Download button */}
+        {/* Download button — always enabled */}
         <a
-          href={cfg.downloadUrl || "#"}
+          href={cfg.downloadUrl && cfg.downloadUrl !== "#" ? cfg.downloadUrl : undefined}
           target={cfg.downloadUrl && cfg.downloadUrl !== "#" ? "_blank" : undefined}
           rel="noopener noreferrer"
-          onClick={(e) => { if (!cfg.downloadUrl || cfg.downloadUrl === "#") e.preventDefault(); }}
-          className={`w-full py-4 font-mono font-bold uppercase tracking-widest transition-all rounded-xl text-center block mt-auto ${glowClass} ${
-            cfg.status === "up"
-              ? `${accentClass.replace("text-", "bg-")} text-white hover:opacity-90`
-              : `${accentClass.replace("text-", "bg-")}/20 text-white/40 cursor-not-allowed pointer-events-none`
-          }`}
+          className={`w-full py-4 font-mono font-bold uppercase tracking-widest transition-all rounded-xl text-center block mt-auto ${glowClass} ${accentClass.replace("text-", "bg-")} text-white hover:opacity-90`}
         >
           <DownloadCloud className="inline w-4 h-4 mr-2 -mt-0.5" />
           Download {name}
         </a>
 
-        {/* Release history toggle */}
+        {/* Release history */}
         {cfg.releases && cfg.releases.length > 0 && (
           <div className="mt-4">
             <button
@@ -154,7 +140,7 @@ const ExecutorCard: React.FC<{
             >
               <Clock className="w-3.5 h-3.5" />
               {showReleases ? "Hide" : "Show"} release history ({cfg.releases.length})
-              {showReleases ? <ChevronDown className="w-3.5 h-3.5 rotate-180" /> : <ChevronDown className="w-3.5 h-3.5" />}
+              <ChevronDown className={`w-3.5 h-3.5 transition-transform ${showReleases ? "rotate-180" : ""}`} />
             </button>
 
             <AnimatePresence>
@@ -195,8 +181,6 @@ export const Download: React.FC = () => {
     loadConfig().then(setCfg);
   }, []);
 
-  const config = cfg;
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -206,10 +190,9 @@ export const Download: React.FC = () => {
       <div className="text-center mb-12">
         <h2 className="text-4xl font-mono font-bold text-white mb-4 text-shadow-neon-purple">DOWNLOAD</h2>
         <p className="text-muted-foreground">Fragment — choose your preferred API integration below.</p>
-        {config && <p className="text-xs font-mono text-gray-600 mt-1">{config.version}</p>}
       </div>
 
-      {!config ? (
+      {!cfg ? (
         <div className="flex items-center justify-center py-24 text-gray-500 font-mono text-sm gap-3">
           <RefreshCw className="w-4 h-4 animate-spin" /> Loading…
         </div>
@@ -222,8 +205,7 @@ export const Download: React.FC = () => {
               icon={DownloadCloud}
               accentClass="text-primary"
               glowClass="shadow-[0_0_20px_rgba(168,85,247,0.25)]"
-              cfg={config.velocityApi}
-              version={config.version}
+              cfg={cfg.velocityApi}
             />
             <ExecutorCard
               name="Xeno API"
@@ -231,23 +213,23 @@ export const Download: React.FC = () => {
               icon={FileArchive}
               accentClass="text-cyan-400"
               glowClass="shadow-[0_0_20px_rgba(6,182,212,0.25)]"
-              cfg={config.xenoApi}
-              version={config.version}
+              cfg={cfg.xenoApi}
             />
           </div>
 
-          {/* Warning */}
+          {/* Antivirus warning */}
           <div className="bg-[#1a1400] border border-amber-500/50 rounded-2xl p-4 mb-12 flex items-start gap-4">
             <AlertTriangle className="w-6 h-6 text-amber-500 flex-shrink-0 mt-1" />
             <div>
               <h4 className="text-amber-500 font-mono font-bold mb-1">⚠ ANTIVIRUS FALSE POSITIVE</h4>
               <p className="text-amber-500/80 text-sm">
-                Due to the nature of process injection, Fragment may be flagged by Windows Defender or other AV software. Disable real-time protection temporarily during installation. We do not modify persistent system files.
+                Due to the nature of process injection, Fragment may be flagged by Windows Defender or other AV software.
+                Disable real-time protection temporarily during installation. We do not modify persistent system files.
               </p>
             </div>
           </div>
 
-          {/* Instructions */}
+          {/* Installation steps */}
           <div className="bg-card border border-white/10 rounded-2xl overflow-hidden">
             <div className="bg-black/40 px-6 py-4 border-b border-white/10 flex items-center gap-3">
               <TermIcon className="w-5 h-5 text-gray-400" />
@@ -257,12 +239,12 @@ export const Download: React.FC = () => {
               {[
                 "Disable Windows Defender real-time protection temporarily.",
                 "Extract the downloaded ZIP or run the installer as Administrator.",
-                <>Launch <span className="text-white bg-white/10 px-1 py-0.5 rounded">Fragment.exe</span> and enter your license key when prompted.</>,
+                <>Launch <span className="text-white bg-white/10 px-1 py-0.5 rounded">Fragment.exe</span>.</>,
                 "Open Roblox (Web Client, not UWP). Wait for the injection confirmation toast in the bottom right.",
                 "Paste your script and click execute. Happy hacking.",
               ].map((step, i) => (
                 <div key={i} className="flex gap-4">
-                  <span className="text-primary">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="text-primary flex-shrink-0">{String(i + 1).padStart(2, "0")}</span>
                   <p>{step}</p>
                 </div>
               ))}
@@ -273,4 +255,3 @@ export const Download: React.FC = () => {
     </motion.div>
   );
 };
-

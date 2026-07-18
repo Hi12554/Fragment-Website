@@ -1,4 +1,4 @@
-export type ApiStatus = 'up' | 'down' | 'roblox_downgrade';
+export type ApiStatus = 'up' | 'down';
 
 export interface Release {
   id: string;
@@ -21,7 +21,6 @@ export interface ApiConfig {
 }
 
 export interface AdminConfig {
-  version: string;
   maintenance: boolean;
   velocityApi: ApiConfig;
   xenoApi: ApiConfig;
@@ -45,7 +44,6 @@ const DEFAULT_API: ApiConfig = {
 };
 
 export const DEFAULTS: AdminConfig = {
-  version: 'v4.2.1',
   maintenance: false,
   velocityApi: { ...DEFAULT_API },
   xenoApi: { ...DEFAULT_API },
@@ -55,13 +53,9 @@ export const DEFAULTS: AdminConfig = {
   },
 };
 
-// Legacy localStorage key — kept for local cache
 const LS_KEY = 'fragment_admin_config';
-
-// Base path for the API server
 const API_BASE = '/api';
 
-// In-memory session token (never persisted to localStorage)
 let _sessionToken: string | null = null;
 
 function authHeaders(): HeadersInit {
@@ -78,10 +72,6 @@ function mergeConfig(parsed: Partial<AdminConfig>): AdminConfig {
   };
 }
 
-/**
- * Authenticate against the server. Returns an error string on failure, null on success.
- * The issued token is stored in memory — never written to localStorage.
- */
 export async function loginAdmin(password: string): Promise<string | null> {
   try {
     const res = await fetch(`${API_BASE}/admin/login`, {
@@ -90,9 +80,7 @@ export async function loginAdmin(password: string): Promise<string | null> {
       body: JSON.stringify({ password }),
     });
     const data = await res.json() as { token?: string; error?: string };
-    if (!res.ok || !data.token) {
-      return data.error ?? 'Login failed.';
-    }
+    if (!res.ok || !data.token) return data.error ?? 'Login failed.';
     _sessionToken = data.token;
     return null;
   } catch {
@@ -100,7 +88,6 @@ export async function loginAdmin(password: string): Promise<string | null> {
   }
 }
 
-/** Load config from the database via the API. Falls back to localStorage cache, then defaults. */
 export async function loadConfig(): Promise<AdminConfig> {
   try {
     const res = await fetch(`${API_BASE}/admin/config`, { headers: authHeaders() });
@@ -108,16 +95,12 @@ export async function loadConfig(): Promise<AdminConfig> {
       const data = await res.json() as { found: boolean; config: Partial<AdminConfig> | null };
       if (data.found && data.config) {
         const merged = mergeConfig(data.config);
-        // Update local cache
         localStorage.setItem(LS_KEY, JSON.stringify(merged));
         return merged;
       }
     }
-  } catch {
-    // API unavailable — fall through to cache
-  }
+  } catch { /* fall through */ }
 
-  // Fallback: return cached config
   try {
     const raw = localStorage.getItem(LS_KEY);
     if (raw) return mergeConfig(JSON.parse(raw));
@@ -126,7 +109,6 @@ export async function loadConfig(): Promise<AdminConfig> {
   return structuredClone(DEFAULTS);
 }
 
-/** Persist config to the database via the API. Also updates the local cache. */
 export async function saveConfig(config: AdminConfig): Promise<void> {
   const res = await fetch(`${API_BASE}/admin/config`, {
     method: 'PUT',
@@ -139,11 +121,9 @@ export async function saveConfig(config: AdminConfig): Promise<void> {
     throw new Error(body.error ?? `Server error ${res.status}`);
   }
 
-  // Update local cache on success
   localStorage.setItem(LS_KEY, JSON.stringify(config));
 }
 
-/** Synchronous fallback — reads from local cache only. */
 export function getConfig(): AdminConfig {
   try {
     const raw = localStorage.getItem(LS_KEY);
@@ -155,9 +135,5 @@ export function getConfig(): AdminConfig {
 }
 
 export function getStatusLabel(status: ApiStatus): string {
-  switch (status) {
-    case 'up': return 'Operational';
-    case 'down': return 'Down';
-    case 'roblox_downgrade': return 'Roblox Downgrade Required';
-  }
+  return status === 'up' ? 'Operational' : 'Roblox Downgrade Required';
 }
