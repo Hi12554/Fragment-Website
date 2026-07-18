@@ -251,7 +251,6 @@ export const Download: React.FC = () => {
         <h2 className="text-4xl font-mono font-bold text-white mb-4 text-shadow-neon-purple">DOWNLOAD</h2>
         <p className="text-muted-foreground">Fragment — choose your preferred API integration below.</p>
       </div>
-
       {!cfg ? (
         <div className="flex items-center justify-center py-24 text-gray-500 font-mono text-sm gap-3">
           <RefreshCw className="w-4 h-4 animate-spin" /> Loading…
@@ -282,10 +281,7 @@ export const Download: React.FC = () => {
             <AlertTriangle className="w-6 h-6 text-amber-500 flex-shrink-0 mt-1" />
             <div>
               <h4 className="text-amber-500 font-mono font-bold mb-1">⚠ ANTIVIRUS FALSE POSITIVE</h4>
-              <p className="text-amber-500/80 text-sm">
-                Due to the nature of process injection, Fragment may be flagged by Windows Defender or other AV software.
-                Disable real-time protection temporarily during installation. We do not modify persistent system files.
-              </p>
+              <p className="text-amber-500/80 text-sm">Due to the nature of process injection, Fragment may be flagged by Windows Defender or other AV software. Disable real-time protection temporarily during installation, or add Fragment to your exclusions. We do not modify persistent system files.</p>
             </div>
           </div>
 
@@ -297,11 +293,11 @@ export const Download: React.FC = () => {
             </div>
             <div className="p-6 font-mono text-sm space-y-4 text-gray-300">
               {[
-                "Disable Windows Defender real-time protection temporarily.",
+                "Disable Windows Defender real-time protection temporarily, or add Fragment to your exclusions.",
                 "Extract the downloaded ZIP or run the installer as Administrator.",
                 <>Launch <span className="text-white bg-white/10 px-1 py-0.5 rounded">Fragment.exe</span>.</>,
-                "Open Roblox (Web Client, not UWP). Wait for the injection confirmation toast in the bottom right.",
-                "Paste your script and click execute. Happy hacking.",
+                "Open Roblox.",
+                "Paste your script and click execute.",
               ].map((step, i) => (
                 <div key={i} className="flex gap-4">
                   <span className="text-primary flex-shrink-0">{String(i + 1).padStart(2, "0")}</span>
