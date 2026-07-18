@@ -7,8 +7,7 @@ const TEAM = [
     members: [
       {
         name: "popfork1",
-        role: "Lead Developer",
-        color: "border-primary text-primary bg-primary/10 shadow-[0_0_15px_rgba(168,85,247,0.3)]",
+        color: "border-primary shadow-[0_0_15px_rgba(168,85,247,0.3)]",
         avatar: "https://cdn.discordapp.com/avatars/1132477120665370674/00c878ea66e11aaceb7f94c93973c7f0.webp?size=1280",
       },
     ],
@@ -18,8 +17,7 @@ const TEAM = [
     members: [
       {
         name: "5Green",
-        role: "UI Designer",
-        color: "border-secondary text-secondary bg-secondary/10 shadow-[0_0_15px_rgba(6,182,212,0.3)]",
+        color: "border-secondary shadow-[0_0_15px_rgba(6,182,212,0.3)]",
         avatar: "https://cdn.discordapp.com/avatars/566045062753026098/4149d1153d1c16df240d729bad8d98b9.webp?size=1280",
       },
     ],
@@ -46,7 +44,7 @@ export const Credits: React.FC = () => {
             <h3 className="text-xl font-mono font-bold text-white mb-8 border-l-4 border-primary pl-4 tracking-widest">
               {section.category}
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="flex flex-wrap gap-6">
               {section.members.map((member, mIdx) => (
                 <motion.div
                   key={member.name}
@@ -54,22 +52,23 @@ export const Credits: React.FC = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: mIdx * 0.1 }}
-                  className="bg-card border border-white/5 p-6 rounded-2xl hover:border-white/20 transition-colors group"
+                  className="flex flex-col items-center gap-3 group"
                 >
-                  <div className="flex items-center gap-4">
-                    <div className={`w-14 h-14 rounded-xl border-2 overflow-hidden flex-shrink-0 transition-all duration-300 group-hover:scale-110 ${member.color}`}>
-                      <img
-                        src={member.avatar}
-                        alt={member.name}
-                        className="w-full h-full object-cover"
-                        onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
-                      />
-                    </div>
-                    <div>
-                      <div className="font-mono font-bold text-white text-lg">{member.name}</div>
-                      <div className="text-xs text-gray-500 uppercase tracking-wider font-mono">{member.role}</div>
-                    </div>
+                  <div
+                    className={`w-20 h-20 rounded-2xl border-2 overflow-hidden transition-all duration-300 group-hover:scale-110 ${member.color}`}
+                  >
+                    <img
+                      src={member.avatar}
+                      alt={member.name}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).style.display = "none";
+                      }}
+                    />
                   </div>
+                  <span className="font-mono font-bold text-white text-sm">
+                    {member.name}
+                  </span>
                 </motion.div>
               ))}
             </div>
