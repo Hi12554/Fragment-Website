@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Wrench, Lock, Eye, EyeOff, X } from 'lucide-react';
-import { ADMIN_PASSWORD } from '../store/adminStore';
+import { loginAdmin } from '../store/adminStore';
 
 interface MaintenanceProps {
   onUnlock: () => void;
@@ -11,14 +11,20 @@ export const Maintenance: React.FC<MaintenanceProps> = ({ onUnlock }) => {
   const [showLogin, setShowLogin] = useState(false);
   const [pw, setPw] = useState('');
   const [showPw, setShowPw] = useState(false);
-  const [err, setErr] = useState(false);
+  const [err, setErr] = useState('');
+  const [loggingIn, setLoggingIn] = useState(false);
 
-  const handleLogin = () => {
-    if (pw === ADMIN_PASSWORD) {
+  const handleLogin = async () => {
+    setLoggingIn(true);
+    setErr('');
+    const error = await loginAdmin(pw);
+    setLoggingIn(false);
+    if (error) {
+      setErr(error);
+    } else {
+      setPw('');
       sessionStorage.setItem('fragment_maintenance_bypass', '1');
       onUnlock();
-    } else {
-      setErr(true);
     }
   };
 
@@ -91,7 +97,10 @@ export const Maintenance: React.FC<MaintenanceProps> = ({ onUnlock }) => {
                   </div>
                   <h2 className="font-mono font-bold text-white">ADMIN LOGIN</h2>
                 </div>
-                <button onClick={() => { setShowLogin(false); setErr(false); setPw(''); }} className="text-gray-500 hover:text-white">
+                <button
+                  onClick={() => { setShowLogin(false); setErr(''); setPw(''); }}
+                  className="text-gray-500 hover:text-white"
+                >
                   <X className="w-5 h-5" />
                 </button>
               </div>
@@ -101,8 +110,8 @@ export const Maintenance: React.FC<MaintenanceProps> = ({ onUnlock }) => {
                 <input
                   type={showPw ? 'text' : 'password'}
                   value={pw}
-                  onChange={(e) => { setPw(e.target.value); setErr(false); }}
-                  onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
+                  onChange={(e) => { setPw(e.target.value); setErr(''); }}
+                  onKeyDown={(e) => e.key === 'Enter' && !loggingIn && handleLogin()}
                   placeholder="Admin password"
                   className="w-full bg-[#0D0D11] border border-white/10 focus:border-primary outline-none rounded-xl px-4 py-3 text-white font-mono text-sm"
                   autoFocus
@@ -114,12 +123,13 @@ export const Maintenance: React.FC<MaintenanceProps> = ({ onUnlock }) => {
                   {showPw ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
-              {err && <p className="text-red-400 text-xs font-mono mb-3">Incorrect password.</p>}
+              {err && <p className="text-red-400 text-xs font-mono mb-3">{err}</p>}
               <button
                 onClick={handleLogin}
-                className="w-full py-3 bg-primary text-white font-mono font-bold uppercase tracking-widest rounded-xl hover:bg-primary/90 transition-colors"
+                disabled={loggingIn || !pw}
+                className="w-full py-3 bg-primary text-white font-mono font-bold uppercase tracking-widest rounded-xl hover:bg-primary/90 transition-colors disabled:opacity-60"
               >
-                Unlock Site
+                {loggingIn ? 'Verifying…' : 'Unlock Site'}
               </button>
             </motion.div>
           </motion.div>

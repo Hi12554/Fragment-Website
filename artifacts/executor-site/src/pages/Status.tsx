@@ -58,19 +58,19 @@ export const Status: React.FC = () => {
       name: "Velocity API",
       subtitle: "Fragment × Velocity",
       icon: Zap,
-      status: cfg.velocityStatus,
-      history: generateHistory(cfg.velocityStatus),
+      status: cfg.velocityApi.status,
+      history: generateHistory(cfg.velocityApi.status),
     },
     {
       name: "Xeno API",
       subtitle: "Fragment × Xeno",
       icon: FileCode,
-      status: cfg.xenoStatus,
-      history: generateHistory(cfg.xenoStatus),
+      status: cfg.xenoApi.status,
+      history: generateHistory(cfg.xenoApi.status),
     },
   ];
 
-  const badge = overallBadge(cfg.velocityStatus, cfg.xenoStatus);
+  const badge = overallBadge(cfg.velocityApi.status, cfg.xenoApi.status);
 
   return (
     <motion.div

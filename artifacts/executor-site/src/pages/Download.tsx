@@ -71,7 +71,7 @@ export const Download: React.FC = () => {
             Fragment × Velocity
           </p>
 
-          <StatusBadge status={cfg.velocityStatus} />
+          <StatusBadge status={cfg.velocityApi.status} />
 
           <p className="text-muted-foreground mb-6">
             High-performance injection engine. Full Lua 5.4 support with JIT
@@ -83,16 +83,16 @@ export const Download: React.FC = () => {
           </div>
 
           <a
-            href={cfg.velocityLink || "#"}
-            target={cfg.velocityLink && cfg.velocityLink !== "#" ? "_blank" : undefined}
+            href={cfg.velocityApi.downloadUrl || "#"}
+            target={cfg.velocityApi.downloadUrl && cfg.velocityApi.downloadUrl !== "#" ? "_blank" : undefined}
             rel="noopener noreferrer"
             className={`w-full py-4 font-mono font-bold uppercase tracking-widest transition-colors box-shadow-neon-purple mt-auto rounded-xl text-center block ${
-              cfg.velocityStatus === "up"
+              cfg.velocityApi.status === "up"
                 ? "bg-primary text-white hover:bg-primary/90"
                 : "bg-primary/30 text-white/50 cursor-not-allowed pointer-events-none"
             }`}
             onClick={(e) => {
-              if (!cfg.velocityLink || cfg.velocityLink === "#") e.preventDefault();
+              if (!cfg.velocityApi.downloadUrl || cfg.velocityApi.downloadUrl === "#") e.preventDefault();
             }}
           >
             Download Velocity API
@@ -115,7 +115,7 @@ export const Download: React.FC = () => {
             Fragment × Xeno
           </p>
 
-          <StatusBadge status={cfg.xenoStatus} />
+          <StatusBadge status={cfg.xenoApi.status} />
 
           <p className="text-muted-foreground mb-6">
             Lightweight portable build. Extract and run — no installation
@@ -127,16 +127,16 @@ export const Download: React.FC = () => {
           </div>
 
           <a
-            href={cfg.xenoLink || "#"}
-            target={cfg.xenoLink && cfg.xenoLink !== "#" ? "_blank" : undefined}
+            href={cfg.xenoApi.downloadUrl || "#"}
+            target={cfg.xenoApi.downloadUrl && cfg.xenoApi.downloadUrl !== "#" ? "_blank" : undefined}
             rel="noopener noreferrer"
             className={`w-full py-4 font-mono font-bold uppercase tracking-widest transition-colors mt-auto rounded-xl text-center block border-2 ${
-              cfg.xenoStatus === "up"
+              cfg.xenoApi.status === "up"
                 ? "bg-transparent border-secondary text-secondary hover:bg-secondary/10"
                 : "border-secondary/30 text-secondary/30 cursor-not-allowed pointer-events-none"
             }`}
             onClick={(e) => {
-              if (!cfg.xenoLink || cfg.xenoLink === "#") e.preventDefault();
+              if (!cfg.xenoApi.downloadUrl || cfg.xenoApi.downloadUrl === "#") e.preventDefault();
             }}
           >
             Download Xeno API
