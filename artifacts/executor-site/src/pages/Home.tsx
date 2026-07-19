@@ -13,10 +13,10 @@ export const Home: React.FC<{ setActivePage: (p: string) => void }> = ({
       fetch("https://weao.xyz/api/versions/current")
         .then((r) => r.json())
         .then((data: {
-          WindowsResponse?: { version?: string };
+          Windows?: string;
           WindowsDate?: string;
         }) => {
-          const version = data?.WindowsResponse?.version ?? null;
+          const version = data?.Windows ?? null;
           const date = data?.WindowsDate ?? null;
           if (version) setRobloxVersion(version);
           if (date) setRobloxDate(date);
