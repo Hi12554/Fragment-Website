@@ -22,7 +22,7 @@ function App() {
 
   // Check maintenance flag from server on load (no auth needed)
   useEffect(() => {
-    fetch("/api/public/config")
+    fetch(`${(import.meta.env.VITE_API_BASE as string | undefined) ?? '/api'}/public/config`)
       .then((r) => r.json())
       .then((data: { maintenance?: boolean }) => {
         if (data.maintenance) setMaintenance(true);
