@@ -52,9 +52,24 @@ export const Home: React.FC<{ setActivePage: (p: string) => void }> = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="text-7xl md:text-9xl font-mono font-bold text-white text-shadow-neon-purple tracking-tighter"
+          className="text-7xl md:text-9xl font-mono font-bold text-white tracking-tighter flex justify-center"
         >
-          FRAGMENT
+          {"FRAGMENT".split("").map((letter, i) => (
+            <motion.span
+              key={i}
+              whileHover={{
+                scale: 1.35,
+                y: -12,
+                textShadow: "0 0 30px rgba(168,85,247,0.9), 0 0 60px rgba(168,85,247,0.5)",
+                color: "#c084fc",
+              }}
+              transition={{ type: "spring", stiffness: 400, damping: 15 }}
+              className="inline-block cursor-default"
+              style={{ textShadow: "0 0 40px rgba(168,85,247,0.3)" }}
+            >
+              {letter}
+            </motion.span>
+          ))}
         </motion.h1>
 
         <motion.p
