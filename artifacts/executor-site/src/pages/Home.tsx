@@ -151,11 +151,12 @@ export const Home: React.FC<{ setActivePage: (p: string) => void }> = ({
             <Terminal className="w-6 h-6 text-secondary" />
           </div>
           <h3 className="text-xl font-mono font-bold text-white mb-3">
-            Full Customization
+            Keyless & Ad-Free
           </h3>
           <p className="text-muted-foreground leading-relaxed">
-            Build your own executor skin with the Fragment API. Unlimited UI
-            themes, custom bootstrapper, and white-labeling.
+            No keys. No ads. No nonsense. Just download, extract, run, and
+            inject — that's it. Note: Velocity API requires a key, but that
+            key system is Velocity's, not ours.
           </p>
         </div>
       </motion.div>
