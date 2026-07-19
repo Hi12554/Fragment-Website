@@ -6,20 +6,26 @@ export const Home: React.FC<{ setActivePage: (p: string) => void }> = ({
   setActivePage,
 }) => {
   const [robloxVersion, setRobloxVersion] = useState<string | null>(null);
+  const [robloxDate, setRobloxDate] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("https://api.weao.xyz/roblox/versions")
-      .then((r) => r.json())
-      .then((data: Record<string, string>) => {
-        // Prefer WindowsPlayer, fall back to first available key
-        const version =
-          data["WindowsPlayer"] ??
-          data["version"] ??
-          Object.values(data)[0] ??
-          null;
-        if (version) setRobloxVersion(String(version));
-      })
-      .catch(() => { /* silently ignore if API is unreachable */ });
+    function fetchVersion() {
+      fetch("https://weao.xyz/api/versions/current")
+        .then((r) => r.json())
+        .then((data: {
+          WindowsResponse?: { version?: string };
+          WindowsDate?: string;
+        }) => {
+          const version = data?.WindowsResponse?.version ?? null;
+          const date = data?.WindowsDate ?? null;
+          if (version) setRobloxVersion(version);
+          if (date) setRobloxDate(date);
+        })
+        .catch(() => { /* silently ignore if API is unreachable */ });
+    }
+    fetchVersion();
+    const interval = setInterval(fetchVersion, 5 * 60 * 1000); // refresh every 5 min
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -68,10 +74,15 @@ export const Home: React.FC<{ setActivePage: (p: string) => void }> = ({
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.25 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-gray-400"
+            className="inline-flex items-center gap-3 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-xs font-mono text-gray-400"
           >
-            <Monitor className="w-3.5 h-3.5 text-gray-500" />
-            Roblox {robloxVersion}
+            <Monitor className="w-3.5 h-3.5 text-gray-500 flex-shrink-0" />
+            <div className="flex flex-col items-start gap-0.5">
+              <span className="text-white font-bold tracking-wide">Roblox {robloxVersion}</span>
+              {robloxDate && (
+                <span className="text-gray-500 text-[10px]">Released {robloxDate}</span>
+              )}
+            </div>
           </motion.div>
         )}
 

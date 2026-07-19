@@ -153,9 +153,9 @@ const ExecutorCard: React.FC<{
                 </div>
               )}
               {cfg.supportedVersion && (
-                <div className={`bg-[#0D0D11] rounded-xl px-3 py-2.5 text-center border border-white/5 ${!cfg.uncPercent && !cfg.suncPercent ? "col-span-3" : ""}`}>
-                  <div className="font-mono font-bold text-sm text-white truncate">{cfg.supportedVersion}</div>
-                  <div className="text-xs text-gray-500 font-mono mt-0.5">Roblox ver.</div>
+                <div className="col-span-3 bg-[#0D0D11] rounded-xl px-4 py-2.5 border border-white/5 flex items-center justify-between gap-3">
+                  <div className="text-xs text-gray-500 font-mono whitespace-nowrap">Supported Roblox</div>
+                  <div className="font-mono font-bold text-sm text-white text-right break-all">{cfg.supportedVersion}</div>
                 </div>
               )}
             </div>
