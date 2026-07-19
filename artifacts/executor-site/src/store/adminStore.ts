@@ -54,7 +54,7 @@ export const DEFAULTS: AdminConfig = {
 };
 
 const LS_KEY = 'fragment_admin_config';
-const API_BASE = (import.meta.env.VITE_API_BASE as string | undefined) ?? '/api';
+const API_BASE = '/api';
 
 let _sessionToken: string | null = null;
 
