@@ -43,23 +43,17 @@ export const About: React.FC = () => {
 
             <p className="text-lg sm:text-xl text-gray-300 leading-relaxed font-sans text-center">
               Fragment was built for developers and power users who demand performance,
-              stability, and creative freedom in Roblox scripting. We saw a
-              landscape cluttered with malware-ridden, unstable executors and
-              decided to build something different: a surgical, professional-grade
-              tool with zero compromises. We are the bridge between raw exploit
-              capability and polished software engineering.
+              stability, and creative freedom in Roblox scripting. We saw a landscape
+              cluttered with malware-ridden, ad-infested executors hiding behind
+              paywalls and key systems — and decided to build something different.
+              No link bypasses. No waiting. Just download, extract, run, and inject.
+              We believe powerful software should be accessible to everyone, without
+              friction or compromise. Fragment is, and always will be, completely
+              keyless and ad-free.
             </p>
-
-            <div className="mt-8 pt-8 border-t border-white/10">
-              <p className="text-base text-gray-400 leading-relaxed font-sans text-center">
-                Fragment is <span className="text-white font-semibold">completely keyless and ad-free</span>. 
-                No paywalls, no link bypasses, no waiting. Download, extract, run, inject — done.
-                We believe execution software should be accessible to everyone without friction.
-              </p>
-              <p className="text-sm text-gray-600 leading-relaxed font-sans text-center mt-4">
-                Note: The Velocity API integration requires a key — that key system belongs to Velocity, not us. Fragment itself has no key system of any kind.
-              </p>
-            </div>
+            <p className="text-sm text-gray-600 leading-relaxed font-sans text-center mt-6">
+              Note: The Velocity API integration requires a key — that key system belongs to Velocity, not us. Fragment itself has no key system of any kind.
+            </p>
           </div>
         </motion.div>
 
