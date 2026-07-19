@@ -10,7 +10,12 @@
   },
   "private": true,
   "dependencies": {
-    "@replit/connectors-sdk": "^0.4.1"
+    "@replit/connectors-sdk": "^0.4.1",
+    "@types/node": "catalog:",
+    "@types/pg": "^8.20.0",
+    "drizzle-orm": "catalog:",
+    "pg": "^8.22.0",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@vercel/node": "^5.8.26",
