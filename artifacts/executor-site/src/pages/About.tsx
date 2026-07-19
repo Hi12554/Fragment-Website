@@ -49,6 +49,17 @@ export const About: React.FC = () => {
               tool with zero compromises. We are the bridge between raw exploit
               capability and polished software engineering.
             </p>
+
+            <div className="mt-8 pt-8 border-t border-white/10">
+              <p className="text-base text-gray-400 leading-relaxed font-sans text-center">
+                Fragment is <span className="text-white font-semibold">completely keyless and ad-free</span>. 
+                No paywalls, no link bypasses, no waiting. Download, extract, run, inject — done.
+                We believe execution software should be accessible to everyone without friction.
+              </p>
+              <p className="text-sm text-gray-600 leading-relaxed font-sans text-center mt-4">
+                Note: The Velocity API integration requires a key — that key system belongs to Velocity, not us. Fragment itself has no key system of any kind.
+              </p>
+            </div>
           </div>
         </motion.div>
 
