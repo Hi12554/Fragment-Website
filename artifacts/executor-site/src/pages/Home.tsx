@@ -63,9 +63,7 @@ export const Home: React.FC<{ setActivePage: (p: string) => void }> = ({
           transition={{ duration: 0.5, delay: 0.2 }}
           className="text-xl md:text-2xl text-muted-foreground font-sans max-w-2xl mx-auto"
         >
-          Next-generation Roblox script execution.{" "}
-          <br className="hidden md:block" />
-          <span className="text-white">Undetected. Unstoppable.</span>
+          An executor made by the people, for the people{" "}
         </motion.p>
 
         {/* Roblox version badge */}
