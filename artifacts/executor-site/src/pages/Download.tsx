@@ -5,7 +5,7 @@ import {
   AlertTriangle, ChevronDown, ShieldCheck,
   ExternalLink, Clock, RefreshCw, X, ZoomIn,
 } from "lucide-react";
-import { loadConfig, AdminConfig, ApiConfig, ApiStatus } from "../store/adminStore";
+import { loadPublicConfig, AdminConfig, ApiConfig, ApiStatus } from "../store/adminStore";
 
 // ── Lightbox ─────────────────────────────────────────────────────────────────
 const Lightbox: React.FC<{ src: string; alt: string; onClose: () => void }> = ({ src, alt, onClose }) => (
@@ -238,7 +238,7 @@ export const Download: React.FC = () => {
   const [cfg, setCfg] = useState<AdminConfig | null>(null);
 
   useEffect(() => {
-    loadConfig().then(setCfg);
+    loadPublicConfig().then(setCfg);
   }, []);
 
   return (

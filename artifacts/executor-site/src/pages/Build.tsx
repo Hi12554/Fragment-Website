@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { DownloadCloud, FileArchive, FolderOpen } from "lucide-react";
-import { loadConfig, AdminConfig } from "../store/adminStore";
+import { loadPublicConfig, AdminConfig } from "../store/adminStore";
 
 export const Build: React.FC = () => {
   const [cfg, setCfg] = useState<AdminConfig | null>(null);
 
   useEffect(() => {
-    loadConfig().then(setCfg);
+    loadPublicConfig().then(setCfg);
   }, []);
 
   const files = cfg

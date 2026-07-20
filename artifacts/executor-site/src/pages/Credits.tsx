@@ -118,7 +118,6 @@ export const Credits: React.FC = () => {
                       <div
                         className="relative w-24 h-24 rounded-2xl overflow-hidden ring-2 transition-all duration-300 group-hover:ring-4"
                         style={{
-                          ringColor: section.border,
                           boxShadow: `0 0 0 2px ${section.border}`,
                         }}
                       >

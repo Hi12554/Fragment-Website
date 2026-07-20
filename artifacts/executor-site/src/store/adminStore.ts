@@ -88,6 +88,21 @@ export async function loginAdmin(password: string): Promise<string | null> {
   }
 }
 
+/** For public pages — no auth required. */
+export async function loadPublicConfig(): Promise<AdminConfig> {
+  try {
+    const res = await fetch(`${API_BASE}/public/config`);
+    if (res.ok) {
+      const data = await res.json() as { found: boolean } & Partial<AdminConfig>;
+      if (data.found) {
+        return mergeConfig(data);
+      }
+    }
+  } catch { /* fall through */ }
+  return structuredClone(DEFAULTS);
+}
+
+/** For the admin panel only — requires a valid session token. */
 export async function loadConfig(): Promise<AdminConfig> {
   try {
     const res = await fetch(`${API_BASE}/admin/config`, { headers: authHeaders() });

@@ -7,29 +7,33 @@ const router: IRouter = Router();
 const SINGLETON_ID = "singleton";
 
 /**
- * GET /api/public/config — returns non-sensitive site config (no auth required).
- * Used by the frontend on every page load to check maintenance mode.
+ * GET /api/public/config — returns full site config without auth.
+ * Used by all public-facing pages (Download, Status, Build, maintenance gate).
  */
 router.get("/public/config", async (_req, res) => {
   try {
     const rows = await db
-      .select({
-        maintenance: adminConfigTable.maintenance,
-        version: adminConfigTable.version,
-      })
+      .select()
       .from(adminConfigTable)
       .where(eq(adminConfigTable.id, SINGLETON_ID))
       .limit(1);
 
     if (rows.length === 0) {
-      res.json({ maintenance: false, version: null });
+      res.json({ found: false });
       return;
     }
 
-    res.json({ maintenance: rows[0].maintenance, version: rows[0].version });
+    const row = rows[0];
+    res.json({
+      found: true,
+      maintenance: row.maintenance,
+      version: row.version,
+      velocityApi: row.velocityApi,
+      xenoApi: row.xenoApi,
+      buildFiles: row.buildFiles,
+    });
   } catch {
-    // On DB error, default to non-maintenance so the site stays up
-    res.json({ maintenance: false, version: null });
+    res.json({ found: false, maintenance: false, version: null });
   }
 });
 

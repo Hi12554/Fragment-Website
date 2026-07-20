@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Activity, Zap, FileCode } from "lucide-react";
-import { loadConfig, AdminConfig, ApiStatus, getStatusLabel } from "../store/adminStore";
+import { loadPublicConfig, AdminConfig, ApiStatus, getStatusLabel } from "../store/adminStore";
 
 function statusColor(s: ApiStatus) {
   return s === "up"
@@ -36,9 +36,9 @@ export const Status: React.FC = () => {
   const [cfg, setCfg] = useState<AdminConfig | null>(null);
 
   useEffect(() => {
-    loadConfig().then((c) => { setCfg(c); setLastChecked(new Date()); });
+    loadPublicConfig().then((c) => { setCfg(c); setLastChecked(new Date()); });
     const interval = setInterval(() => {
-      loadConfig().then((c) => { setCfg(c); setLastChecked(new Date()); });
+      loadPublicConfig().then((c) => { setCfg(c); setLastChecked(new Date()); });
     }, 30000);
     return () => clearInterval(interval);
   }, []);
