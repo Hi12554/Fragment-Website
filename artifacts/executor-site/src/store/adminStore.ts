@@ -84,7 +84,7 @@ export async function loginAdmin(password: string): Promise<string | null> {
     _sessionToken = data.token;
     return null;
   } catch {
-    return 'Could not reach the server.';
+    return 'Could not reach the server. Make sure the API is running.';
   }
 }
 
