@@ -1,61 +1,45 @@
-# Fragment Executor Site
+# [Project name]
 
-A multi-page Roblox Executor website with a dark cyberpunk aesthetic (dark grays, neon purple/cyan accents).
+_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+
+## Run & Operate
+
+- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
+- `pnpm run typecheck` — full typecheck across all packages
+- `pnpm run build` — typecheck + build all packages
+- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
+- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
+- Required env: `DATABASE_URL` — Postgres connection string
 
 ## Stack
 
-| Layer | Tech |
-|-------|------|
-| Frontend | React 19 + Vite 7, Tailwind CSS v4, Framer Motion, Wouter |
-| API Server | Express 5, Pino logging |
-| Database | Neon PostgreSQL via Drizzle ORM |
-| Monorepo | pnpm workspaces |
+- pnpm workspaces, Node.js 24, TypeScript 5.9
+- API: Express 5
+- DB: PostgreSQL + Drizzle ORM
+- Validation: Zod (`zod/v4`), `drizzle-zod`
+- API codegen: Orval (from OpenAPI spec)
+- Build: esbuild (CJS bundle)
 
-## Project structure
+## Where things live
 
-```
-artifacts/
-  executor-site/   # React/Vite frontend (preview path: /)
-  api-server/      # Express API server   (preview path: /api)
-  mockup-sandbox/  # Canvas mockup server (preview path: /__mockup)
-lib/
-  db/              # Drizzle ORM schema + Neon connection
-  api-zod/         # Zod schemas generated from OpenAPI spec
-  api-client-react/# React-Query API client (generated)
-  api-spec/        # OpenAPI spec + Orval codegen config
-```
+_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
 
-## How to run
+## Architecture decisions
 
-Both services start automatically via Replit workflows:
+_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
 
-- **Frontend** — `pnpm --filter @workspace/executor-site run dev`
-- **API Server** — `pnpm --filter @workspace/api-server run dev` (builds then starts)
+## Product
 
-## Environment / secrets
-
-| Secret | Purpose |
-|--------|---------|
-| `NEON_DATABASE` | Neon PostgreSQL connection string |
-| `SESSION_SECRET` | Express session signing |
-
-## Database
-
-Schema lives in `lib/db/src/schema/`. To push schema changes to Neon:
-
-```bash
-NEON_DATABASE="<url>" pnpm --filter @workspace/db run push
-```
-
-## Admin panel
-
-Navigate to `/admin` on the frontend. Password is stored in `lib/db/src/store/adminStore.ts` (`ADMIN_PASSWORD`). Config is saved to/loaded from the `admin_config` table in Neon.
-
-## Pages
-
-Home · Download · About · Build · Status · Socials · Credits · Admin (at `/admin`)
+_Describe the high-level user-facing capabilities of this app once they exist._
 
 ## User preferences
 
-- Keep existing monorepo structure
-- Use Neon (`NEON_DATABASE`) as the database, not a Replit-provisioned one
+_Populate as you build — explicit user instructions worth remembering across sessions._
+
+## Gotchas
+
+_Populate as you build — sharp edges, "always run X before Y" rules._
+
+## Pointers
+
+- See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details
