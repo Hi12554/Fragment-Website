@@ -1,0 +1,17 @@
+Already up to date
+. preinstall$ sh -c 'rm -f package-lock.json yarn.lock; case "$npm_config_user_agent" in pnpm/*) ;; *) echo "Use pnpm instead" >&2; exit 1 ;; esac'
+. preinstall: Done
+Done in 1.7s using pnpm v10.28.0
+Using TypeScript 5.9.3 (local user-provided)
+api/admin/config.ts(1,52): error TS2307: Cannot find module '@vercel/node' or its corresponding type declarations.
+api/admin/config.ts(2,20): error TS2307: Cannot find module 'drizzle-orm' or its corresponding type declarations.
+api/admin/config.ts(3,19): error TS2307: Cannot find module 'zod' or its corresponding type declarations.
+api/admin/config.ts(8,8): error TS2591: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node` and then add 'node' to the types field in your tsconfig.
+api/_lib/db.ts(1,25): error TS2307: Cannot find module 'drizzle-orm/node-postgres' or its corresponding type declarations.
+api/_lib/db.ts(2,16): error TS2307: Cannot find module 'pg' or its corresponding type declarations.
+api/_lib/db.ts(3,58): error TS2307: Cannot find module 'drizzle-orm/pg-core' or its corresponding type declarations.
+api/_lib/db.ts(21,28): error TS2591: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node` and then add 'node' to the types field in your tsconfig.
+api/_lib/auth.ts(1,45): error TS2307: Cannot find module 'node:crypto' or its corresponding type declarations.
+api/_lib/auth.ts(6,18): error TS2591: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node` and then add 'node' to the types field in your tsconfig.
+api/_lib/auth.ts(9,10): error TS2591: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node` and then add 'node' to the types field in your tsconfig.
+api/_lib/auth.ts(14,20): error TS2591: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node` and then add 'node' to the types field in your tsconfig.
