@@ -1,0 +1,7 @@
+{
+  "buildCommand": "pnpm --filter @workspace/executor-site run build",
+  "outputDirectory": "artifacts/executor-site/dist/public",
+  "rewrites": [
+    { "source": "/((?!api/).*)", "destination": "/index.html" }
+  ]
+}
