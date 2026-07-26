@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  DownloadCloud, FileArchive, Terminal as TermIcon,
+  DownloadCloud, Terminal as TermIcon,
   AlertTriangle, ChevronDown, ShieldCheck,
   ExternalLink, Clock, RefreshCw, X, ZoomIn,
 } from "lucide-react";
@@ -129,3 +129,177 @@ const ExecutorCard: React.FC<{
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
                 <ZoomIn className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-lg" />
               </div>
+            </div>
+          )}
+
+          {/* Description */}
+          {cfg.description && (
+            <p className="text-gray-400 text-sm mb-5 leading-relaxed">{cfg.description}</p>
+          )}
+
+          {/* Stats row */}
+          {(cfg.uncPercent || cfg.suncPercent || cfg.supportedVersion) && (
+            <div className="grid grid-cols-3 gap-3 mb-5">
+              {cfg.uncPercent && (
+                <div className="bg-[#0D0D11] rounded-xl px-3 py-2.5 text-center border border-white/5">
+                  <div className={`font-mono font-bold text-lg ${accentClass}`}>{cfg.uncPercent}%</div>
+                  <div className="text-xs text-gray-500 font-mono mt-0.5">UNC</div>
+                </div>
+              )}
+              {cfg.suncPercent && (
+                <div className="bg-[#0D0D11] rounded-xl px-3 py-2.5 text-center border border-white/5">
+                  <div className={`font-mono font-bold text-lg ${accentClass}`}>{cfg.suncPercent}%</div>
+                  <div className="text-xs text-gray-500 font-mono mt-0.5">sUNC</div>
+                </div>
+              )}
+              {cfg.supportedVersion && (
+                <div className="col-span-3 bg-[#0D0D11] rounded-xl px-4 py-2.5 border border-white/5 flex items-center justify-between gap-3">
+                  <div className="text-xs text-gray-500 font-mono whitespace-nowrap">Supported Roblox</div>
+                  <div className="font-mono font-bold text-sm text-white text-right break-all">{cfg.supportedVersion}</div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* VT scan */}
+          {(cfg.virusTotalUrl || cfg.virusTotalDetections) && (
+            <div className="flex items-center gap-3 mb-5 bg-[#0D0D11] border border-white/5 rounded-xl px-4 py-3">
+              <ShieldCheck className="w-4 h-4 text-green-400 flex-shrink-0" />
+              <div className="flex-1 min-w-0">
+                <p className="text-xs text-gray-400 font-mono">VirusTotal Scan</p>
+                {cfg.virusTotalDetections && (
+                  <p className="text-xs font-mono text-green-400 font-bold">{cfg.virusTotalDetections} detections</p>
+                )}
+              </div>
+              {cfg.virusTotalUrl && (
+                <a href={cfg.virusTotalUrl} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-white transition-colors flex-shrink-0">
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+              )}
+            </div>
+          )}
+
+          {/* Download button — always enabled */}
+          <a
+            href={cfg.downloadUrl && cfg.downloadUrl !== "#" ? cfg.downloadUrl : undefined}
+            target={cfg.downloadUrl && cfg.downloadUrl !== "#" ? "_blank" : undefined}
+            rel="noopener noreferrer"
+            className={`w-full py-4 font-mono font-bold uppercase tracking-widest transition-all rounded-xl text-center block mt-auto ${glowClass} ${accentClass.replace("text-", "bg-")} text-white hover:opacity-90`}
+          >
+            <DownloadCloud className="inline w-4 h-4 mr-2 -mt-0.5" />
+            Download {name}
+          </a>
+
+          {/* Release history */}
+          {cfg.releases && cfg.releases.length > 0 && (
+            <div className="mt-4">
+              <button
+                onClick={() => setShowReleases(!showReleases)}
+                className="flex items-center gap-1.5 text-xs font-mono text-gray-500 hover:text-gray-300 transition-colors w-full justify-center"
+              >
+                <Clock className="w-3.5 h-3.5" />
+                {showReleases ? "Hide" : "Show"} release history ({cfg.releases.length})
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${showReleases ? "rotate-180" : ""}`} />
+              </button>
+
+              <AnimatePresence>
+                {showReleases && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="overflow-hidden mt-3"
+                  >
+                    <div className="space-y-2">
+                      {cfg.releases.map((release) => (
+                        <div key={release.id} className="border border-white/10 rounded-xl p-4 bg-[#0D0D11]">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className={`font-mono font-bold text-sm ${accentClass}`}>{release.version}</span>
+                            <span className="text-xs text-gray-500 font-mono">{release.date}</span>
+                          </div>
+                          <p className="text-xs text-gray-400 leading-relaxed whitespace-pre-wrap">{release.changelog}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  );
+};
+
+// ── Download page ────────────────────────────────────────────────────────────
+export const Download: React.FC = () => {
+  const [cfg, setCfg] = useState<AdminConfig | null>(null);
+
+  useEffect(() => {
+    loadPublicConfig().then(setCfg);
+  }, []);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="min-h-screen pt-24 pb-12 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8"
+    >
+      <div className="text-center mb-12">
+        <h2 className="text-4xl font-mono font-bold text-white mb-4 text-shadow-neon-purple">DOWNLOAD</h2>
+        <p className="text-muted-foreground">Fragment — powered by Velocity.</p>
+      </div>
+      {!cfg ? (
+        <div className="flex items-center justify-center py-24 text-gray-500 font-mono text-sm gap-3">
+          <RefreshCw className="w-4 h-4 animate-spin" /> Loading…
+        </div>
+      ) : (
+        <>
+          <div className="max-w-md mx-auto mb-12">
+            <ExecutorCard
+              name="Velocity API"
+              subtitle="Fragment × Velocity"
+              icon={DownloadCloud}
+              accentClass="text-primary"
+              glowClass="shadow-[0_0_20px_rgba(168,85,247,0.25)]"
+              cfg={cfg.velocityApi}
+            />
+          </div>
+
+          {/* Antivirus warning */}
+          <div className="bg-[#1a1400] border border-amber-500/50 rounded-2xl p-4 mb-12 flex items-start gap-4">
+            <AlertTriangle className="w-6 h-6 text-amber-500 flex-shrink-0 mt-1" />
+            <div>
+              <h4 className="text-amber-500 font-mono font-bold mb-1">⚠ ANTIVIRUS FALSE POSITIVE</h4>
+              <p className="text-amber-500/80 text-sm">Due to the nature of process injection, Fragment may be flagged by Windows Defender or other AV software. Disable real-time protection temporarily during installation, or add Fragment to your exclusions. We do not modify persistent system files.</p>
+            </div>
+          </div>
+
+          {/* Installation steps */}
+          <div className="bg-card border border-white/10 rounded-2xl overflow-hidden">
+            <div className="bg-black/40 px-6 py-4 border-b border-white/10 flex items-center gap-3">
+              <TermIcon className="w-5 h-5 text-gray-400" />
+              <h3 className="font-mono font-bold text-white">INSTALLATION_STEPS.md</h3>
+            </div>
+            <div className="p-6 font-mono text-sm space-y-4 text-gray-300">
+              {[
+                "Disable Windows Defender real-time protection temporarily, or add Fragment to your exclusions.",
+                "Extract the downloaded ZIP or run the installer as Administrator.",
+                <>Launch <span className="text-white bg-white/10 px-1 py-0.5 rounded">Fragment.exe</span>.</>,
+                "Open Roblox.",
+                "Paste your script and click execute.",
+              ].map((step, i) => (
+                <div key={i} className="flex gap-4">
+                  <span className="text-primary flex-shrink-0">{String(i + 1).padStart(2, "0")}</span>
+                  <p>{step}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
+    </motion.div>
+  );
+};
