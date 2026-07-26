@@ -42,16 +42,46 @@ const Lightbox: React.FC<{ src: string; alt: string; onClose: () => void }> = ({
 );
 
 // ── Status helpers ────────────────────────────────────────────────────────────
-function StatusBadge({ items }: { items: { label: string; status: ApiStatus }[] }) {
+const DowngradeItem: React.FC<{ label: string; supportedVersion: string }> = ({ label, supportedVersion }) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="bg-amber-500/10 border border-amber-500/40 rounded-xl overflow-hidden">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between gap-2 px-4 py-2.5 text-amber-400 font-mono text-xs"
+      >
+        <span className="flex items-center gap-2">
+          <AlertTriangle className="w-4 h-4 flex-shrink-0" />
+          {label} API: Roblox Downgrade Required
+        </span>
+        <ChevronDown className={`w-4 h-4 flex-shrink-0 transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden"
+          >
+            <div className="px-4 pb-3 pt-0.5 border-t border-amber-500/20 text-amber-300/80 text-xs font-mono leading-relaxed">
+              Downgrade Roblox {supportedVersion ? <>to <span className="text-amber-200 font-bold">{supportedVersion}</span> </> : ""}to support Fragment {label}.
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+function StatusBadge({ items }: { items: { label: string; status: ApiStatus; supportedVersion: string }[] }) {
   const down = items.filter((i) => i.status !== "up");
   if (down.length === 0) return null;
   return (
     <div className="w-full mb-4 space-y-2">
       {down.map((i) => (
-        <div key={i.label} className="flex items-center gap-2 bg-amber-500/10 border border-amber-500/40 rounded-xl px-4 py-2 text-amber-400 font-mono text-xs">
-          <ChevronDown className="w-4 h-4 flex-shrink-0" />
-          {i.label} API: Roblox Downgrade Required
-        </div>
+        <DowngradeItem key={i.label} label={i.label} supportedVersion={i.supportedVersion} />
       ))}
     </div>
   );
@@ -154,8 +184,8 @@ const ExecutorCard: React.FC<{
           </div>
 
           <StatusBadge items={[
-            { label: "Velocity", status: velocityCfg.status },
-            { label: "Xeno", status: xenoCfg.status },
+            { label: "Velocity", status: velocityCfg.status, supportedVersion: velocityCfg.supportedVersion },
+            { label: "Xeno", status: xenoCfg.status, supportedVersion: xenoCfg.supportedVersion },
           ]} />
 
           {/* Preview image — click to expand */}
