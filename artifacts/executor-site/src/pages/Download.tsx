@@ -260,7 +260,7 @@ export const Download: React.FC = () => {
           <div className="max-w-md mx-auto mb-12">
             <ExecutorCard
               name="Velocity API"
-              subtitle="Fragment × Velocity"
+              subtitle="Fragment with Velocity and Xeno API"
               icon={DownloadCloud}
               accentClass="text-primary"
               glowClass="shadow-[0_0_20px_rgba(168,85,247,0.25)]"
