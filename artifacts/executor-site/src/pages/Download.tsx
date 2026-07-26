@@ -62,6 +62,38 @@ function statusLabel(status: ApiStatus) {
   return status === "up" ? "Operational" : "Downgrade Required";
 }
 
+// ── Per-API stat section (UNC / sUNC / supported version) ────────────────────
+const ApiStatSection: React.FC<{ label: string; accentClass: string; cfg: ApiConfig }> = ({ label, accentClass, cfg }) => {
+  if (!cfg.uncPercent && !cfg.suncPercent && !cfg.supportedVersion) return null;
+  return (
+    <div className="bg-[#0D0D11] border border-white/5 rounded-xl p-4">
+      <p className={`text-xs font-mono font-bold uppercase tracking-widest mb-3 ${accentClass}`}>{label}</p>
+      {(cfg.uncPercent || cfg.suncPercent) && (
+        <div className="grid grid-cols-2 gap-3 mb-3">
+          {cfg.uncPercent && (
+            <div className="bg-black/20 rounded-lg px-3 py-2.5 text-center border border-white/5">
+              <div className={`font-mono font-bold text-lg ${accentClass}`}>{cfg.uncPercent}%</div>
+              <div className="text-xs text-gray-500 font-mono mt-0.5">UNC</div>
+            </div>
+          )}
+          {cfg.suncPercent && (
+            <div className="bg-black/20 rounded-lg px-3 py-2.5 text-center border border-white/5">
+              <div className={`font-mono font-bold text-lg ${accentClass}`}>{cfg.suncPercent}%</div>
+              <div className="text-xs text-gray-500 font-mono mt-0.5">sUNC</div>
+            </div>
+          )}
+        </div>
+      )}
+      {cfg.supportedVersion && (
+        <div className="bg-black/20 rounded-lg px-4 py-2.5 border border-white/5 flex items-center justify-between gap-3">
+          <div className="text-xs text-gray-500 font-mono whitespace-nowrap">Supported Roblox</div>
+          <div className="font-mono font-bold text-sm text-white text-right break-all">{cfg.supportedVersion}</div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 // ── Single executor card ─────────────────────────────────────────────────────
 const ExecutorCard: React.FC<{
   name: string;
@@ -70,7 +102,9 @@ const ExecutorCard: React.FC<{
   accentClass: string;
   glowClass: string;
   cfg: ApiConfig;
-}> = ({ name, subtitle, icon: Icon, accentClass, glowClass, cfg }) => {
+  velocityCfg: ApiConfig;
+  xenoCfg: ApiConfig;
+}> = ({ name, subtitle, icon: Icon, accentClass, glowClass, cfg, velocityCfg, xenoCfg }) => {
   const [showReleases, setShowReleases] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
@@ -137,27 +171,12 @@ const ExecutorCard: React.FC<{
             <p className="text-gray-400 text-sm mb-5 leading-relaxed">{cfg.description}</p>
           )}
 
-          {/* Stats row */}
-          {(cfg.uncPercent || cfg.suncPercent || cfg.supportedVersion) && (
-            <div className="grid grid-cols-3 gap-3 mb-5">
-              {cfg.uncPercent && (
-                <div className="bg-[#0D0D11] rounded-xl px-3 py-2.5 text-center border border-white/5">
-                  <div className={`font-mono font-bold text-lg ${accentClass}`}>{cfg.uncPercent}%</div>
-                  <div className="text-xs text-gray-500 font-mono mt-0.5">UNC</div>
-                </div>
-              )}
-              {cfg.suncPercent && (
-                <div className="bg-[#0D0D11] rounded-xl px-3 py-2.5 text-center border border-white/5">
-                  <div className={`font-mono font-bold text-lg ${accentClass}`}>{cfg.suncPercent}%</div>
-                  <div className="text-xs text-gray-500 font-mono mt-0.5">sUNC</div>
-                </div>
-              )}
-              {cfg.supportedVersion && (
-                <div className="col-span-3 bg-[#0D0D11] rounded-xl px-4 py-2.5 border border-white/5 flex items-center justify-between gap-3">
-                  <div className="text-xs text-gray-500 font-mono whitespace-nowrap">Supported Roblox</div>
-                  <div className="font-mono font-bold text-sm text-white text-right break-all">{cfg.supportedVersion}</div>
-                </div>
-              )}
+          {/* Per-API stats */}
+          {(velocityCfg.uncPercent || velocityCfg.suncPercent || velocityCfg.supportedVersion ||
+            xenoCfg.uncPercent || xenoCfg.suncPercent || xenoCfg.supportedVersion) && (
+            <div className="space-y-3 mb-5">
+              <ApiStatSection label="Velocity API" accentClass="text-primary" cfg={velocityCfg} />
+              <ApiStatSection label="Xeno API" accentClass="text-cyan-400" cfg={xenoCfg} />
             </div>
           )}
 
@@ -249,7 +268,7 @@ export const Download: React.FC = () => {
     >
       <div className="text-center mb-12">
         <h2 className="text-4xl font-mono font-bold text-white mb-4 text-shadow-neon-purple">DOWNLOAD</h2>
-        <p className="text-muted-foreground">Fragment — powered by Velocity and Xeno API.</p>
+        <p className="text-muted-foreground">Fragment — powered by Velocity &amp; Xeno.</p>
       </div>
       {!cfg ? (
         <div className="flex items-center justify-center py-24 text-gray-500 font-mono text-sm gap-3">
@@ -259,12 +278,14 @@ export const Download: React.FC = () => {
         <>
           <div className="max-w-md mx-auto mb-12">
             <ExecutorCard
-              name="Velocity API"
-              subtitle="Fragment with Velocity and Xeno API"
+              name="Fragment"
+              subtitle="Velocity × Xeno"
               icon={DownloadCloud}
               accentClass="text-primary"
               glowClass="shadow-[0_0_20px_rgba(168,85,247,0.25)]"
               cfg={cfg.velocityApi}
+              velocityCfg={cfg.velocityApi}
+              xenoCfg={cfg.xenoApi}
             />
           </div>
 
