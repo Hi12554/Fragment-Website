@@ -42,7 +42,7 @@ const Lightbox: React.FC<{ src: string; alt: string; onClose: () => void }> = ({
 );
 
 // ── Status helpers ────────────────────────────────────────────────────────────
-const DowngradeItem: React.FC<{ label: string; supportedVersion: string }> = ({ label, supportedVersion }) => {
+const DowngradeItem: React.FC<{ label: string; supportedVersion: string; downgradeLink: string }> = ({ label, supportedVersion, downgradeLink }) => {
   const [open, setOpen] = useState(false);
   return (
     <div className="bg-amber-500/10 border border-amber-500/40 rounded-xl overflow-hidden">
@@ -65,8 +65,20 @@ const DowngradeItem: React.FC<{ label: string; supportedVersion: string }> = ({ 
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <div className="px-4 pb-3 pt-0.5 border-t border-amber-500/20 text-amber-300/80 text-xs font-mono leading-relaxed">
-              Downgrade Roblox {supportedVersion ? <>to <span className="text-amber-200 font-bold">{supportedVersion}</span> </> : ""}to support Fragment {label}.
+            <div className="px-4 pb-3 pt-0.5 border-t border-amber-500/20">
+              <p className="text-amber-300/80 text-xs font-mono leading-relaxed">
+                Downgrade Roblox {supportedVersion ? <>to <span className="text-amber-200 font-bold">{supportedVersion}</span> </> : ""}to support Fragment {label}.
+              </p>
+              {downgradeLink && downgradeLink !== "#" && (
+                <a
+                  href={downgradeLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 mt-2.5 text-amber-300 hover:text-amber-200 font-mono text-xs font-bold underline underline-offset-2 transition-colors"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" /> Get the downgrade for {label}
+                </a>
+              )}
             </div>
           </motion.div>
         )}
@@ -75,13 +87,13 @@ const DowngradeItem: React.FC<{ label: string; supportedVersion: string }> = ({ 
   );
 };
 
-function StatusBadge({ items }: { items: { label: string; status: ApiStatus; supportedVersion: string }[] }) {
+function StatusBadge({ items }: { items: { label: string; status: ApiStatus; supportedVersion: string; downgradeLink: string }[] }) {
   const down = items.filter((i) => i.status !== "up");
   if (down.length === 0) return null;
   return (
     <div className="w-full mb-4 space-y-2">
       {down.map((i) => (
-        <DowngradeItem key={i.label} label={i.label} supportedVersion={i.supportedVersion} />
+        <DowngradeItem key={i.label} label={i.label} supportedVersion={i.supportedVersion} downgradeLink={i.downgradeLink} />
       ))}
     </div>
   );
@@ -184,8 +196,8 @@ const ExecutorCard: React.FC<{
           </div>
 
           <StatusBadge items={[
-            { label: "Velocity", status: velocityCfg.status, supportedVersion: velocityCfg.supportedVersion },
-            { label: "Xeno", status: xenoCfg.status, supportedVersion: xenoCfg.supportedVersion },
+            { label: "Velocity", status: velocityCfg.status, supportedVersion: velocityCfg.supportedVersion, downgradeLink: velocityCfg.downgradeLink },
+            { label: "Xeno", status: xenoCfg.status, supportedVersion: xenoCfg.supportedVersion, downgradeLink: xenoCfg.downgradeLink },
           ]} />
 
           {/* Preview image — click to expand */}
