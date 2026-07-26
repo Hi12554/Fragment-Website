@@ -120,7 +120,11 @@ const ReleaseEditor: React.FC<{
 const ApiConfigPanel: React.FC<{
   value: ApiConfig;
   onChange: (v: ApiConfig) => void;
-}> = ({ value, onChange }) => {
+  /** Shared, product-level fields (download URL, VT scan, preview image, description, releases).
+   *  Fragment ships as a single executable that can target either API, so these only need to be
+   *  set once — pass false to hide them on a secondary API tab. */
+  showSharedFields?: boolean;
+}> = ({ value, onChange, showSharedFields = true }) => {
   const set = <K extends keyof ApiConfig>(key: K, v: ApiConfig[K]) =>
     onChange({ ...value, [key]: v });
 
@@ -143,44 +147,54 @@ const ApiConfigPanel: React.FC<{
       </div>
 
       <div>
-        <label className={labelCls}>Description</label>
-        <textarea value={value.description} onChange={(e) => set("description", e.target.value)} placeholder="Shown on the Download page" rows={3} className={inputCls + " resize-none"} />
-      </div>
-
-      <div>
         <label className={labelCls}>Supported Roblox Version</label>
         <input value={value.supportedVersion} onChange={(e) => set("supportedVersion", e.target.value)} placeholder="e.g. 2.640.xxx" className={inputCls} />
       </div>
 
-      <div>
-        <label className={labelCls}>Download URL</label>
-        <input value={value.downloadUrl} onChange={(e) => set("downloadUrl", e.target.value)} placeholder="https://..." className={inputCls} />
-      </div>
+      {!showSharedFields && (
+        <p className="text-xs text-gray-600 font-mono py-3 px-4 bg-[#0D0D11] border border-dashed border-white/10 rounded-xl">
+          Download URL, VirusTotal scan, preview image, description, and release notes are shared across both APIs — manage those on the Velocity API tab.
+        </p>
+      )}
 
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className={labelCls}>VirusTotal Scan URL</label>
-          <input value={value.virusTotalUrl} onChange={(e) => set("virusTotalUrl", e.target.value)} placeholder="https://virustotal.com/..." className={inputCls} />
-        </div>
-        <div>
-          <label className={labelCls}>VT Detections</label>
-          <input value={value.virusTotalDetections} onChange={(e) => set("virusTotalDetections", e.target.value)} placeholder="e.g. 0/72" className={inputCls} />
-        </div>
-      </div>
-
-      <div>
-        <label className={labelCls}>Preview Image URL</label>
-        <input value={value.previewImage} onChange={(e) => set("previewImage", e.target.value)} placeholder="https://... (shown as a preview on the Download page)" className={inputCls} />
-        {value.previewImage && (
-          <div className="mt-2 rounded-xl overflow-hidden border border-white/10 max-h-48">
-            <img src={value.previewImage} alt="Preview" className="w-full h-full object-cover" onError={(e) => (e.currentTarget.style.display = "none")} />
+      {showSharedFields && (
+        <>
+          <div>
+            <label className={labelCls}>Description</label>
+            <textarea value={value.description} onChange={(e) => set("description", e.target.value)} placeholder="Shown on the Download page" rows={3} className={inputCls + " resize-none"} />
           </div>
-        )}
-      </div>
 
-      <div className="border-t border-white/5 pt-5">
-        <ReleaseEditor releases={value.releases} onChange={(r) => set("releases", r)} />
-      </div>
+          <div>
+            <label className={labelCls}>Download URL</label>
+            <input value={value.downloadUrl} onChange={(e) => set("downloadUrl", e.target.value)} placeholder="https://..." className={inputCls} />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className={labelCls}>VirusTotal Scan URL</label>
+              <input value={value.virusTotalUrl} onChange={(e) => set("virusTotalUrl", e.target.value)} placeholder="https://virustotal.com/..." className={inputCls} />
+            </div>
+            <div>
+              <label className={labelCls}>VT Detections</label>
+              <input value={value.virusTotalDetections} onChange={(e) => set("virusTotalDetections", e.target.value)} placeholder="e.g. 0/72" className={inputCls} />
+            </div>
+          </div>
+
+          <div>
+            <label className={labelCls}>Preview Image URL</label>
+            <input value={value.previewImage} onChange={(e) => set("previewImage", e.target.value)} placeholder="https://... (shown as a preview on the Download page)" className={inputCls} />
+            {value.previewImage && (
+              <div className="mt-2 rounded-xl overflow-hidden border border-white/10 max-h-48">
+                <img src={value.previewImage} alt="Preview" className="w-full h-full object-cover" onError={(e) => (e.currentTarget.style.display = "none")} />
+              </div>
+            )}
+          </div>
+
+          <div className="border-t border-white/5 pt-5">
+            <ReleaseEditor releases={value.releases} onChange={(r) => set("releases", r)} />
+          </div>
+        </>
+      )}
     </div>
   );
 };
@@ -357,7 +371,7 @@ export const Admin: React.FC = () => {
               )}
 
               {activeTab === "xeno" && (
-                <ApiConfigPanel value={config.xenoApi} onChange={(v) => set("xenoApi", v)} />
+                <ApiConfigPanel value={config.xenoApi} onChange={(v) => set("xenoApi", v)} showSharedFields={false} />
               )}
 
               {activeTab === "build" && (
