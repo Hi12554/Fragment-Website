@@ -42,12 +42,17 @@ const Lightbox: React.FC<{ src: string; alt: string; onClose: () => void }> = ({
 );
 
 // ── Status helpers ────────────────────────────────────────────────────────────
-function StatusBadge({ status }: { status: ApiStatus }) {
-  if (status === "up") return null;
+function StatusBadge({ items }: { items: { label: string; status: ApiStatus }[] }) {
+  const down = items.filter((i) => i.status !== "up");
+  if (down.length === 0) return null;
   return (
-    <div className="w-full mb-4 flex items-center gap-2 bg-amber-500/10 border border-amber-500/40 rounded-xl px-4 py-2 text-amber-400 font-mono text-xs">
-      <ChevronDown className="w-4 h-4 flex-shrink-0" />
-      Roblox Downgrade Required
+    <div className="w-full mb-4 space-y-2">
+      {down.map((i) => (
+        <div key={i.label} className="flex items-center gap-2 bg-amber-500/10 border border-amber-500/40 rounded-xl px-4 py-2 text-amber-400 font-mono text-xs">
+          <ChevronDown className="w-4 h-4 flex-shrink-0" />
+          {i.label} API: Roblox Downgrade Required
+        </div>
+      ))}
     </div>
   );
 }
@@ -67,7 +72,12 @@ const ApiStatSection: React.FC<{ label: string; accentClass: string; cfg: ApiCon
   if (!cfg.uncPercent && !cfg.suncPercent && !cfg.supportedVersion) return null;
   return (
     <div className="bg-[#0D0D11] border border-white/5 rounded-xl p-4">
-      <p className={`text-xs font-mono font-bold uppercase tracking-widest mb-3 ${accentClass}`}>{label}</p>
+      <div className="flex items-center justify-between mb-3">
+        <p className={`text-xs font-mono font-bold uppercase tracking-widest ${accentClass}`}>{label}</p>
+        <div className={`flex items-center text-xs font-mono ${cfg.status === "up" ? "text-green-400" : "text-amber-400"}`}>
+          {statusDot(cfg.status)}{statusLabel(cfg.status)}
+        </div>
+      </div>
       {(cfg.uncPercent || cfg.suncPercent) && (
         <div className="grid grid-cols-2 gap-3 mb-3">
           {cfg.uncPercent && (
@@ -137,16 +147,16 @@ const ExecutorCard: React.FC<{
               </div>
             </div>
             <div className="text-right">
-              <div className={`flex items-center justify-end text-xs font-mono ${cfg.status === "up" ? "text-green-400" : "text-amber-400"}`}>
-                {statusDot(cfg.status)}{statusLabel(cfg.status)}
-              </div>
               {latestRelease?.version && (
                 <div className="text-xs text-gray-600 font-mono mt-0.5">{latestRelease.version}</div>
               )}
             </div>
           </div>
 
-          <StatusBadge status={cfg.status} />
+          <StatusBadge items={[
+            { label: "Velocity", status: velocityCfg.status },
+            { label: "Xeno", status: xenoCfg.status },
+          ]} />
 
           {/* Preview image — click to expand */}
           {cfg.previewImage && (
