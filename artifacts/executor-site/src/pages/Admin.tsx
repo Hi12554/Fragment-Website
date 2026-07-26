@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Save, Lock, Eye, EyeOff, RefreshCw, Database,
-  Zap, Wrench, FolderOpen, Plus, Trash2, ChevronDown, ChevronUp,
+  Zap, FileCode, Wrench, FolderOpen, Plus, Trash2, ChevronDown, ChevronUp,
 } from "lucide-react";
 import {
   loginAdmin, loadConfig, saveConfig,
@@ -186,10 +186,11 @@ const ApiConfigPanel: React.FC<{
 };
 
 // ── Tab definition ───────────────────────────────────────────────────────────
-type TabId = "velocity" | "build" | "maintenance";
+type TabId = "velocity" | "xeno" | "build" | "maintenance";
 
 const TABS: { id: TabId; label: string; icon: React.ElementType; accent?: string }[] = [
   { id: "velocity", label: "Velocity API", icon: Zap, accent: "text-primary" },
+  { id: "xeno",     label: "Xeno API",     icon: FileCode, accent: "text-cyan-400" },
   { id: "build",    label: "Build Files",  icon: FolderOpen },
   { id: "maintenance", label: "Maintenance", icon: Wrench },
 ];
@@ -353,6 +354,10 @@ export const Admin: React.FC = () => {
             >
               {activeTab === "velocity" && (
                 <ApiConfigPanel value={config.velocityApi} onChange={(v) => set("velocityApi", v)} />
+              )}
+
+              {activeTab === "xeno" && (
+                <ApiConfigPanel value={config.xenoApi} onChange={(v) => set("xenoApi", v)} />
               )}
 
               {activeTab === "build" && (
