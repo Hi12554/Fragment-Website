@@ -249,7 +249,7 @@ export const Download: React.FC = () => {
     >
       <div className="text-center mb-12">
         <h2 className="text-4xl font-mono font-bold text-white mb-4 text-shadow-neon-purple">DOWNLOAD</h2>
-        <p className="text-muted-foreground">Fragment — powered by Velocity.</p>
+        <p className="text-muted-foreground">Fragment — powered by Velocity and Xeno API.</p>
       </div>
       {!cfg ? (
         <div className="flex items-center justify-center py-24 text-gray-500 font-mono text-sm gap-3">
