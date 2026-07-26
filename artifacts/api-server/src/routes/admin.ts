@@ -16,6 +16,7 @@ const ApiConfigSchema = z.object({
   suncPercent: z.string(),
   description: z.string(),
   supportedVersion: z.string(),
+  downgradeLink: z.string(),
   downloadUrl: z.string(),
   virusTotalUrl: z.string(),
   virusTotalDetections: z.string(),
