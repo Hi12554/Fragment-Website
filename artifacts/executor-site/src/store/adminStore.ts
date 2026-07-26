@@ -13,6 +13,7 @@ export interface ApiConfig {
   suncPercent: string;
   description: string;
   supportedVersion: string;
+  downgradeLink: string;
   downloadUrl: string;
   virusTotalUrl: string;
   virusTotalDetections: string;
@@ -36,6 +37,7 @@ const DEFAULT_API: ApiConfig = {
   suncPercent: '',
   description: '',
   supportedVersion: '',
+  downgradeLink: '',
   downloadUrl: '#',
   virusTotalUrl: '',
   virusTotalDetections: '',
