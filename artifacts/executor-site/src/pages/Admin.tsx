@@ -151,6 +151,11 @@ const ApiConfigPanel: React.FC<{
         <input value={value.supportedVersion} onChange={(e) => set("supportedVersion", e.target.value)} placeholder="e.g. 2.640.xxx" className={inputCls} />
       </div>
 
+      <div>
+        <label className={labelCls}>Downgrade Link</label>
+        <input value={value.downgradeLink} onChange={(e) => set("downgradeLink", e.target.value)} placeholder="https://... (shown on the downgrade-required notice)" className={inputCls} />
+      </div>
+
       {!showSharedFields && (
         <p className="text-xs text-gray-600 font-mono py-3 px-4 bg-[#0D0D11] border border-dashed border-white/10 rounded-xl">
           Download URL, VirusTotal scan, preview image, description, and release notes are shared across both APIs — manage those on the Velocity API tab.
