@@ -13,6 +13,7 @@ const NAV_ITEMS = [
   "About",
   "Build",
   "Status",
+  "Test Results",
   "Socials",
   "Credits",
 ];
