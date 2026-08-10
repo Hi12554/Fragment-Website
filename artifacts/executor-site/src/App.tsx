@@ -5,6 +5,7 @@ import { Download } from "./pages/Download";
 import { About } from "./pages/About";
 import { Build } from "./pages/Build";
 import { Status } from "./pages/Status";
+import { TestResults } from "./pages/TestResults";
 import { Socials } from "./pages/Socials";
 import { Credits } from "./pages/Credits";
 import { Admin } from "./pages/Admin";
@@ -50,6 +51,7 @@ function App() {
       case "About":    return <About />;
       case "Build":    return <Build />;
       case "Status":   return <Status />;
+      case "Test Results": return <TestResults />;
       case "Socials":  return <Socials />;
       case "Credits":  return <Credits />;
       default:         return <Home setActivePage={setActivePage} />;
