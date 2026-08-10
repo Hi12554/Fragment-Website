@@ -195,16 +195,7 @@ export const TestResults: React.FC = () => {
 
       <div className="mt-12 bg-[#0A0A0E] border border-white/5 p-6 rounded-2xl text-center">
         <p className="font-mono text-sm text-gray-400">
-          Have questions about a benchmark? Join our{" "}
-          <a
-            href="https://discord.gg/VvSK3zUHZP"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-primary hover:underline"
-          >
-            Discord server
-          </a>{" "}
-          and check the <span className="text-primary">#announcements</span> channel.
+          Results are updated as new API versions and Roblox builds release.
         </p>
       </div>
     </motion.div>
