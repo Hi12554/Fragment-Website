@@ -104,6 +104,7 @@ const COMING_SOON: ApiResult[] = [
       { label: "Quorum Nexomia Premium SUNC Test 2", url: "https://r.sunc.su/ywOljX6kMM" },
     ],
   },
+];
 
 const TerminalCard: React.FC<{ api: ApiResult; index: number }> = ({ api, index }) => (
   <motion.div
