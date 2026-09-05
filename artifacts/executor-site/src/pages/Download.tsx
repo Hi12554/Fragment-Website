@@ -1,47 +1,46 @@
-```tsx
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  DownloadCloud, Terminal as TermIcon,
-  AlertTriangle, ChevronDown, ShieldCheck,
-  ExternalLink, Clock, RefreshCw, X, ZoomIn,
+  DownloadCloud,
+  Terminal as TermIcon,
+  AlertTriangle,
+  ChevronDown,
+  ShieldCheck,
+  ExternalLink,
+  Clock,
+  RefreshCw,
+  X,
+  ZoomIn,
 } from "lucide-react";
-import { loadPublicConfig, AdminConfig, ApiConfig, ApiStatus } from "../store/adminStore";
+import {
+  loadPublicConfig,
+  AdminConfig,
+  ApiConfig,
+  ApiStatus,
+} from "../store/adminStore";
 
 // ── sUNC Widget ───────────────────────────────────────────────────────────────
+
 const SuncWidget: React.FC<{
   scrapId: string;
   accessKey: string;
 }> = ({ scrapId, accessKey }) => {
-  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const handleLoad = (
+    event: React.SyntheticEvent<HTMLIFrameElement>
+  ) => {
+    const iframe = event.currentTarget;
 
-  useEffect(() => {
-    const iframe = iframeRef.current;
-    if (!iframe) return;
-
-    const loadScrap = () => {
-      iframe.contentWindow?.postMessage(
-        {
-          type: "sunc-widget:loadScrap",
-          payload: {
-            scrapId,
-            key: accessKey,
-          },
+    iframe.contentWindow?.postMessage(
+      {
+        type: "sunc-widget:loadScrap",
+        payload: {
+          scrapId,
+          key: accessKey,
         },
-        "https://sunc.rubis.app"
-      );
-    };
-
-    if (iframe.contentWindow) {
-      loadScrap();
-    }
-
-    iframe.addEventListener("load", loadScrap);
-
-    return () => {
-      iframe.removeEventListener("load", loadScrap);
-    };
-  }, [scrapId, accessKey]);
+      },
+      "https://sunc.rubis.app"
+    );
+  };
 
   return (
     <div className="bg-[#0D0D11] border border-white/5 rounded-xl overflow-hidden">
@@ -49,15 +48,16 @@ const SuncWidget: React.FC<{
         <p className="text-xs font-mono font-bold uppercase tracking-widest text-primary">
           Velocity sUNC Results
         </p>
+
         <p className="text-[11px] font-mono text-gray-500 mt-1">
           Interactive sUNC benchmark results
         </p>
       </div>
 
       <iframe
-        ref={iframeRef}
         src="https://sunc.rubis.app/widget/"
         title="Velocity sUNC Results"
+        onLoad={handleLoad}
         allowFullScreen
         className="w-full border-0"
         style={{ height: "610px" }}
@@ -67,7 +67,12 @@ const SuncWidget: React.FC<{
 };
 
 // ── Lightbox ─────────────────────────────────────────────────────────────────
-const Lightbox: React.FC<{ src: string; alt: string; onClose: () => void }> = ({ src, alt, onClose }) => (
+
+const Lightbox: React.FC<{
+  src: string;
+  alt: string;
+  onClose: () => void;
+}> = ({ src, alt, onClose }) => (
   <AnimatePresence>
     <motion.div
       initial={{ opacity: 0 }}
@@ -88,8 +93,10 @@ const Lightbox: React.FC<{ src: string; alt: string; onClose: () => void }> = ({
           onClick={onClose}
           className="absolute -top-10 right-0 text-gray-400 hover:text-white transition-colors flex items-center gap-1.5 font-mono text-xs"
         >
-          <X className="w-4 h-4" /> Close
+          <X className="w-4 h-4" />
+          Close
         </button>
+
         <img
           src={src}
           alt={alt}
@@ -98,10 +105,10 @@ const Lightbox: React.FC<{ src: string; alt: string; onClose: () => void }> = ({
       </motion.div>
     </motion.div>
   </AnimatePresence>
-  );
-};
+);
 
 // ── Status helpers ────────────────────────────────────────────────────────────
+
 const DowngradeItem: React.FC<{
   label: string;
   supportedVersion: string;
@@ -119,6 +126,7 @@ const DowngradeItem: React.FC<{
           <AlertTriangle className="w-4 h-4 flex-shrink-0" />
           {label} API: Roblox Downgrade Required
         </span>
+
         <ChevronDown
           className={`w-4 h-4 flex-shrink-0 transition-transform ${
             open ? "rotate-180" : ""
@@ -158,8 +166,8 @@ const DowngradeItem: React.FC<{
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 mt-2.5 text-amber-300 hover:text-amber-200 font-mono text-xs font-bold underline underline-offset-2 transition-colors"
                 >
-                  <ExternalLink className="w-3.5 h-3.5" /> Get the downgrade for{" "}
-                  {label}
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  Get the downgrade for {label}
                 </a>
               )}
             </div>
@@ -210,13 +218,16 @@ function statusLabel(status: ApiStatus) {
   return status === "up" ? "Operational" : "Downgrade Required";
 }
 
-// ── Per-API stat section (UNC / sUNC / supported version) ────────────────────
+// ── Per-API stat section ──────────────────────────────────────────────────────
+
 const ApiStatSection: React.FC<{
   label: string;
   accentClass: string;
   cfg: ApiConfig;
 }> = ({ label, accentClass, cfg }) => {
-  if (!cfg.uncPercent && !cfg.suncPercent && !cfg.supportedVersion) return null;
+  if (!cfg.uncPercent && !cfg.suncPercent && !cfg.supportedVersion) {
+    return null;
+  }
 
   return (
     <div className="bg-[#0D0D11] border border-white/5 rounded-xl p-4">
@@ -241,9 +252,12 @@ const ApiStatSection: React.FC<{
         <div className="grid grid-cols-2 gap-3 mb-3">
           {cfg.uncPercent && (
             <div className="bg-black/20 rounded-lg px-3 py-2.5 text-center border border-white/5">
-              <div className={`font-mono font-bold text-lg ${accentClass}`}>
+              <div
+                className={`font-mono font-bold text-lg ${accentClass}`}
+              >
                 {cfg.uncPercent}%
               </div>
+
               <div className="text-xs text-gray-500 font-mono mt-0.5">
                 UNC
               </div>
@@ -252,9 +266,12 @@ const ApiStatSection: React.FC<{
 
           {cfg.suncPercent && (
             <div className="bg-black/20 rounded-lg px-3 py-2.5 text-center border border-white/5">
-              <div className={`font-mono font-bold text-lg ${accentClass}`}>
+              <div
+                className={`font-mono font-bold text-lg ${accentClass}`}
+              >
                 {cfg.suncPercent}%
               </div>
+
               <div className="text-xs text-gray-500 font-mono mt-0.5">
                 sUNC
               </div>
@@ -268,6 +285,7 @@ const ApiStatSection: React.FC<{
           <div className="text-xs text-gray-500 font-mono whitespace-nowrap">
             Supported Roblox
           </div>
+
           <div className="font-mono font-bold text-sm text-white text-right break-all">
             {cfg.supportedVersion}
           </div>
@@ -277,7 +295,8 @@ const ApiStatSection: React.FC<{
   );
 };
 
-// ── Single executor card ─────────────────────────────────────────────────────
+// ── Single executor card ──────────────────────────────────────────────────────
+
 const ExecutorCard: React.FC<{
   name: string;
   subtitle: string;
@@ -300,7 +319,6 @@ const ExecutorCard: React.FC<{
   const [showReleases, setShowReleases] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
-  // Latest release = first entry (they're added newest-first in the admin)
   const latestRelease = cfg.releases?.[0] ?? null;
 
   return (
@@ -314,24 +332,28 @@ const ExecutorCard: React.FC<{
       )}
 
       <div
-        className={`bg-card border ${
-          accentClass.replace("text-", "border-")
-        }/30 rounded-2xl relative overflow-hidden flex flex-col`}
+        className={`bg-card border ${accentClass.replace(
+          "text-",
+          "border-"
+        )}/30 rounded-2xl relative overflow-hidden flex flex-col`}
       >
         <div
-          className={`absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent ${
-            accentClass.replace("text-", "via-")
-          } to-transparent opacity-60`}
+          className={`absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent ${accentClass.replace(
+            "text-",
+            "via-"
+          )} to-transparent opacity-60`}
         />
 
         <div className="p-7 flex flex-col flex-1">
           {/* Header */}
+
           <div className="flex items-start justify-between mb-5">
             <div className="flex items-center gap-4">
               <div
-                className={`w-14 h-14 rounded-2xl flex items-center justify-center ${
-                  accentClass.replace("text-", "bg-")
-                }/15 ${glowClass}`}
+                className={`w-14 h-14 rounded-2xl flex items-center justify-center ${accentClass.replace(
+                  "text-",
+                  "bg-"
+                )}/15 ${glowClass}`}
               >
                 <Icon className={`w-7 h-7 ${accentClass}`} />
               </div>
@@ -340,6 +362,7 @@ const ExecutorCard: React.FC<{
                 <h3 className="text-xl font-mono font-bold text-white">
                   {name}
                 </h3>
+
                 <p
                   className={`text-xs font-mono tracking-widest uppercase ${accentClass}/70`}
                 >
@@ -374,7 +397,8 @@ const ExecutorCard: React.FC<{
             ]}
           />
 
-          {/* Preview image — click to expand */}
+          {/* Preview image */}
+
           {cfg.previewImage && (
             <div
               className="rounded-xl overflow-hidden border border-white/10 mb-5 max-h-44 relative group cursor-zoom-in"
@@ -396,13 +420,15 @@ const ExecutorCard: React.FC<{
           )}
 
           {/* Description */}
+
           {cfg.description && (
             <p className="text-gray-400 text-sm mb-5 leading-relaxed">
               {cfg.description}
             </p>
           )}
 
-          {/* Per-API stats */}
+          {/* API stats */}
+
           {(velocityCfg.uncPercent ||
             velocityCfg.suncPercent ||
             velocityCfg.supportedVersion ||
@@ -417,6 +443,7 @@ const ExecutorCard: React.FC<{
               />
 
               {/* Velocity sUNC Widget */}
+
               <SuncWidget
                 scrapId="YOUR_VELOCITY_SCRAP_ID"
                 accessKey="YOUR_VELOCITY_ACCESS_KEY"
@@ -430,7 +457,8 @@ const ExecutorCard: React.FC<{
             </div>
           )}
 
-          {/* VT scan */}
+          {/* VirusTotal */}
+
           {(cfg.virusTotalUrl || cfg.virusTotalDetections) && (
             <div className="flex items-center gap-3 mb-5 bg-[#0D0D11] border border-white/5 rounded-xl px-4 py-3">
               <ShieldCheck className="w-4 h-4 text-green-400 flex-shrink-0" />
@@ -460,7 +488,8 @@ const ExecutorCard: React.FC<{
             </div>
           )}
 
-          {/* Download button — always enabled */}
+          {/* Download button */}
+
           <a
             href={
               cfg.downloadUrl && cfg.downloadUrl !== "#"
@@ -468,7 +497,9 @@ const ExecutorCard: React.FC<{
                 : undefined
             }
             target={
-              cfg.downloadUrl && cfg.downloadUrl !== "#" ? "_blank" : undefined
+              cfg.downloadUrl && cfg.downloadUrl !== "#"
+                ? "_blank"
+                : undefined
             }
             rel="noopener noreferrer"
             className={`w-full py-4 font-mono font-bold uppercase tracking-widest transition-all rounded-xl text-center block mt-auto ${glowClass} ${accentClass.replace(
@@ -481,6 +512,7 @@ const ExecutorCard: React.FC<{
           </a>
 
           {/* Release history */}
+
           {cfg.releases && cfg.releases.length > 0 && (
             <div className="mt-4">
               <button
@@ -544,6 +576,7 @@ const ExecutorCard: React.FC<{
 };
 
 // ── Download page ─────────────────────────────────────────────────────────────
+
 export const Download: React.FC = () => {
   const [cfg, setCfg] = useState<AdminConfig | null>(null);
 
@@ -588,6 +621,7 @@ export const Download: React.FC = () => {
           </div>
 
           {/* Antivirus warning */}
+
           <div className="bg-[#1a1400] border border-amber-500/50 rounded-2xl p-4 mb-12 flex items-start gap-4">
             <AlertTriangle className="w-6 h-6 text-amber-500 flex-shrink-0 mt-1" />
 
@@ -606,9 +640,11 @@ export const Download: React.FC = () => {
           </div>
 
           {/* Installation steps */}
+
           <div className="bg-card border border-white/10 rounded-2xl overflow-hidden">
             <div className="bg-black/40 px-6 py-4 border-b border-white/10 flex items-center gap-3">
               <TermIcon className="w-5 h-5 text-gray-400" />
+
               <h3 className="font-mono font-bold text-white">
                 INSTALLATION_STEPS.md
               </h3>
@@ -618,7 +654,13 @@ export const Download: React.FC = () => {
               {[
                 "Disable Windows Defender real-time protection temporarily, or add Fragment to your exclusions.",
                 "Extract the downloaded ZIP or run the installer as Administrator.",
-                <>Launch <span className="text-white bg-white/10 px-1 py-0.5 rounded">Fragment.exe</span>.</>,
+                <>
+                  Launch{" "}
+                  <span className="text-white bg-white/10 px-1 py-0.5 rounded">
+                    Fragment.exe
+                  </span>
+                  .
+                </>,
                 "Open Roblox.",
                 "Paste your script and click execute.",
               ].map((step, i) => (
@@ -626,6 +668,7 @@ export const Download: React.FC = () => {
                   <span className="text-primary flex-shrink-0">
                     {String(i + 1).padStart(2, "0")}
                   </span>
+
                   <p>{step}</p>
                 </div>
               ))}
@@ -636,4 +679,3 @@ export const Download: React.FC = () => {
     </motion.div>
   );
 };
-```
