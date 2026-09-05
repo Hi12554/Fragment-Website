@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   DownloadCloud,
@@ -19,23 +19,57 @@ import {
   ApiStatus,
 } from "../store/adminStore";
 
-// ── sUNC Widget ───────────────────────────────────────────────────────────────
+// ── sUNC Configuration ────────────────────────────────────────────────────────
+//
+// Velocity's sUNC result:
+// https://r.sunc.su/DvzMlXNpYP
+//
+// Put your sUNC widget access key here.
+//
+// The key is required by the sUNC Widget API.
+const VELOCITY_SUNC_SCRAP_ID = "DvzMlXNpYP";
+const VELOCITY_SUNC_ACCESS_KEY = "YOUR_SUNC_ACCESS_KEY";
+
+// ── sUNC Widget ────────────────────────────────────────────────────────────────
 
 const SuncWidget: React.FC<{
   scrapId: string;
   accessKey: string;
 }> = ({ scrapId, accessKey }) => {
-  const handleLoad = (
-    event: React.SyntheticEvent<HTMLIFrameElement>
-  ) => {
-    const iframe = event.currentTarget;
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
-    iframe.contentWindow?.postMessage(
+  const initialiseWidget = () => {
+    const iframe = iframeRef.current;
+
+    if (!iframe?.contentWindow) {
+      return;
+    }
+
+    iframe.contentWindow.postMessage(
       {
         type: "sunc-widget:loadScrap",
         payload: {
           scrapId,
           key: accessKey,
+        },
+      },
+      "https://sunc.rubis.app"
+    );
+
+    iframe.contentWindow.postMessage(
+      {
+        type: "sunc-widget:setTheme",
+        payload: {
+          dark: "#0A0A0E",
+          light: "#111118",
+          lighter: "#15151D",
+          sunc: "#B7A0F6",
+          suncLighter: "#D1B9FF",
+          grey: "#888888",
+          lightText: "#E5E5E5",
+          success: "#22C55E",
+          failure: "#EF4444",
+          useDarkLogo: false,
         },
       },
       "https://sunc.rubis.app"
@@ -50,17 +84,22 @@ const SuncWidget: React.FC<{
         </p>
 
         <p className="text-[11px] font-mono text-gray-500 mt-1">
-          Interactive sUNC benchmark results
+          Live interactive sUNC benchmark
         </p>
       </div>
 
       <iframe
+        ref={iframeRef}
+        id="velocity-sunc-widget"
         src="https://sunc.rubis.app/widget/"
         title="Velocity sUNC Results"
-        onLoad={handleLoad}
+        onLoad={initialiseWidget}
         allowFullScreen
         className="w-full border-0"
-        style={{ height: "610px" }}
+        style={{
+          height: "610px",
+          display: "block",
+        }}
       />
     </div>
   );
@@ -190,7 +229,9 @@ function StatusBadge({
 }) {
   const down = items.filter((i) => i.status !== "up");
 
-  if (down.length === 0) return null;
+  if (down.length === 0) {
+    return null;
+  }
 
   return (
     <div className="w-full mb-4 space-y-2">
@@ -444,10 +485,12 @@ const ExecutorCard: React.FC<{
 
               {/* Velocity sUNC Widget */}
 
-              <SuncWidget
-                scrapId="YOUR_VELOCITY_SCRAP_ID"
-                accessKey="YOUR_VELOCITY_ACCESS_KEY"
-              />
+              {VELOCITY_SUNC_ACCESS_KEY !== "YOUR_SUNC_ACCESS_KEY" && (
+                <SuncWidget
+                  scrapId={VELOCITY_SUNC_SCRAP_ID}
+                  accessKey={VELOCITY_SUNC_ACCESS_KEY}
+                />
+              )}
 
               <ApiStatSection
                 label="Xeno API"
