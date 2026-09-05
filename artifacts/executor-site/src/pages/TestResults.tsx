@@ -31,17 +31,17 @@ function statusColor(status: TestLine["status"]) {
 const IN_EXECUTOR: ApiResult[] = [
   {
     name: "Fragment Velocity API",
-    apiVersion: "v1.3.6",
-    robloxVersion: "version-145f189a6a974303",
+    apiVersion: "v1.3.7",
+    robloxVersion: "version-e7d81637d42c4b23",
     lines: [
-      { label: "UNC TEST 1", value: "100% (82/82)", status: "pass" },
-      { label: "UNC TEST 2", value: "96% (79/82)", status: "pass" },
-      { label: "SUNC TEST 1", value: "97% (84/86)", url: "https://r.sunc.su/KgsOCHYCbO", status: "pass" },
-      { label: "SUNC TEST 2", value: "96% (83/86)", url: "https://r.sunc.su/nmHJpaXoER", status: "pass" },
-      { label: "MYRAD TEST 1", value: "96% (135/140)", status: "pass" },
-      { label: "MYRAD TEST 2", value: "96% (135/140)", status: "pass" },
-      { label: "VULNERABILITY TEST 1", value: "86% (136/159)", status: "warn" },
-      { label: "VULNERABILITY TEST 2", value: "86% (137/159)", status: "warn" },
+      { label: "UNC TEST 1", value: "99% (81/82)", status: "pass" },
+      { label: "UNC TEST 2", value: "99% (81/82)", status: "pass" },
+      { label: "SUNC TEST 1", value: "96% (83/86)", url: "https://r.sunc.su/DvzMlXNpYP", status: "pass" },
+      { label: "SUNC TEST 2", value: "96% (83/86)", url: "https://r.sunc.su/DvzMlXNpYP", status: "pass" },
+      { label: "MYRAD TEST 1", value: "100% (140/140)", status: "pass" },
+      { label: "MYRAD TEST 2", value: "100% (140/140)", status: "pass" },
+      { label: "VULNERABILITY TEST 1", value: "100% (159/159)", status: "warn" },
+      { label: "VULNERABILITY TEST 2", value: "100% (159/159)", status: "warn" },
     ],
     links: [
       { label: "Velocity SUNC Test 1", url: "https://r.sunc.su/KgsOCHYCbO" },
