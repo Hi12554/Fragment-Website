@@ -31,21 +31,21 @@ function statusColor(status: TestLine["status"]) {
 const IN_EXECUTOR: ApiResult[] = [
   {
     name: "Fragment Velocity API",
-    apiVersion: "v1.3.7",
-    robloxVersion: "version-e7d81637d42c4b23",
+    apiVersion: "v1.3.6",
+    robloxVersion: "version-145f189a6a974303",
     lines: [
-      { label: "UNC TEST 1", value: "99% (81/82)", status: "pass" },
-      { label: "UNC TEST 2", value: "99% (81/82)", status: "pass" },
-      { label: "SUNC TEST 1", value: "96% (83/86)", url: "https://r.sunc.su/DvzMlXNpYP", status: "pass" },
-      { label: "SUNC TEST 2", value: "96% (83/86)", url: "https://r.sunc.su/xMPncIOslj", status: "pass" },
-      { label: "MYRAD TEST 1", value: "100% (140/140)", status: "pass" },
-      { label: "MYRAD TEST 2", value: "100% (140/140)", status: "pass" },
-      { label: "VULNERABILITY TEST 1", value: "100% (159/159)", status: "warn" },
-      { label: "VULNERABILITY TEST 2", value: "100% (159/159)", status: "warn" },
+      { label: "UNC TEST 1", value: "100% (82/82)", status: "pass" },
+      { label: "UNC TEST 2", value: "96% (79/82)", status: "pass" },
+      { label: "SUNC TEST 1", value: "97% (84/86)", url: "https://r.sunc.su/KgsOCHYCbO", status: "pass" },
+      { label: "SUNC TEST 2", value: "96% (83/86)", url: "https://r.sunc.su/nmHJpaXoER", status: "pass" },
+      { label: "MYRAD TEST 1", value: "96% (135/140)", status: "pass" },
+      { label: "MYRAD TEST 2", value: "96% (135/140)", status: "pass" },
+      { label: "VULNERABILITY TEST 1", value: "86% (136/159)", status: "warn" },
+      { label: "VULNERABILITY TEST 2", value: "86% (137/159)", status: "warn" },
     ],
     links: [
-      { label: "Velocity SUNC Test 1", url: "https://r.sunc.su/DvzMlXNpYP" },
-      { label: "Velocity SUNC Test 2", url: "https://r.sunc.su/xMPncIOslj" },
+      { label: "Velocity SUNC Test 1", url: "https://r.sunc.su/KgsOCHYCbO" },
+      { label: "Velocity SUNC Test 2", url: "https://r.sunc.su/nmHJpaXoER" },
     ],
   },
   {
@@ -64,6 +64,46 @@ const IN_EXECUTOR: ApiResult[] = [
     ],
   },
 ];
+
+const COMING_SOON: ApiResult[] = [
+  {
+    name: "Quorum Madium Premium API",
+    apiVersion: "v1.7.9",
+    robloxVersion: "version-145f189a6a974303",
+    lines: [
+      { label: "UNC TEST 1", value: "98% (80/82)", status: "pass" },
+      { label: "UNC TEST 2", value: "98% (80/82)", status: "pass" },
+      { label: "SUNC TEST 1", value: "97% (84/86)", url: "https://r.sunc.su/Qy2HEpD7PC", status: "pass" },
+      { label: "SUNC TEST 2", value: "93% (80/86)", url: "https://r.sunc.su/ZvbeAJ5CJ3", status: "pass" },
+      { label: "MYRAD TEST 1", value: "91% (128/140)", status: "pass" },
+      { label: "MYRAD TEST 2", value: "92% (129/140)", status: "pass" },
+      { label: "VULNERABILITY TEST 1", value: "99% (158/159)", status: "pass" },
+      { label: "VULNERABILITY TEST 2", value: "99% (158/159)", status: "pass" },
+    ],
+    links: [
+      { label: "Quorum Madium Premium SUNC Test 1", url: "https://r.sunc.su/Qy2HEpD7PC" },
+      { label: "Quorum Madium Premium SUNC Test 2", url: "https://r.sunc.su/ZvbeAJ5CJ3" },
+    ],
+  },
+  {
+    name: "Quorum Nexomia Premium API",
+    apiVersion: "v0.2.7",
+    robloxVersion: "version-ddf602d9cfe44005",
+    lines: [
+      { label: "UNC TEST 1", value: "79% (65/82)", status: "warn" },
+      { label: "UNC TEST 2", value: "79% (65/82)", status: "warn" },
+      { label: "SUNC TEST 1", value: "FAILED", status: "fail" },
+      { label: "SUNC TEST 2", value: "FAILED", status: "fail" },
+      { label: "MYRAD TEST 1", value: "37% (52/140)", status: "fail" },
+      { label: "MYRAD TEST 2", value: "37% (52/140)", status: "fail" },
+      { label: "VULNERABILITY TEST 1", value: "94% (150/159)", status: "pass" },
+      { label: "VULNERABILITY TEST 2", value: "94% (150/159)", status: "pass" },
+    ],
+    links: [
+      { label: "Quorum Nexomia Premium SUNC Test 1", url: "https://r.sunc.su/s32uxbyT6u" },
+      { label: "Quorum Nexomia Premium SUNC Test 2", url: "https://r.sunc.su/ywOljX6kMM" },
+    ],
+  },
 
 const TerminalCard: React.FC<{ api: ApiResult; index: number }> = ({ api, index }) => (
   <motion.div
@@ -153,7 +193,7 @@ export const TestResults: React.FC = () => {
         </p>
       </div>
 
-      <section className="mb-14">
+      <section>
         <SectionHeader label="API's In Executor" />
         <div className="space-y-6">
           {IN_EXECUTOR.map((api, i) => (
