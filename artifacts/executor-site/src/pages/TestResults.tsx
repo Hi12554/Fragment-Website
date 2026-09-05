@@ -65,47 +65,6 @@ const IN_EXECUTOR: ApiResult[] = [
   },
 ];
 
-const COMING_SOON: ApiResult[] = [
-  {
-    name: "Quorum Madium Premium API",
-    apiVersion: "v1.7.9",
-    robloxVersion: "version-145f189a6a974303",
-    lines: [
-      { label: "UNC TEST 1", value: "98% (80/82)", status: "pass" },
-      { label: "UNC TEST 2", value: "98% (80/82)", status: "pass" },
-      { label: "SUNC TEST 1", value: "97% (84/86)", url: "https://r.sunc.su/Qy2HEpD7PC", status: "pass" },
-      { label: "SUNC TEST 2", value: "93% (80/86)", url: "https://r.sunc.su/ZvbeAJ5CJ3", status: "pass" },
-      { label: "MYRAD TEST 1", value: "91% (128/140)", status: "pass" },
-      { label: "MYRAD TEST 2", value: "92% (129/140)", status: "pass" },
-      { label: "VULNERABILITY TEST 1", value: "99% (158/159)", status: "pass" },
-      { label: "VULNERABILITY TEST 2", value: "99% (158/159)", status: "pass" },
-    ],
-    links: [
-      { label: "Quorum Madium Premium SUNC Test 1", url: "https://r.sunc.su/Qy2HEpD7PC" },
-      { label: "Quorum Madium Premium SUNC Test 2", url: "https://r.sunc.su/ZvbeAJ5CJ3" },
-    ],
-  },
-  {
-    name: "Quorum Nexomia Premium API",
-    apiVersion: "v0.2.7",
-    robloxVersion: "version-ddf602d9cfe44005",
-    lines: [
-      { label: "UNC TEST 1", value: "100% (82/82)", status: "pass" },
-      { label: "UNC TEST 2", value: "100% (82/82)", status: "pass" },
-      { label: "SUNC TEST 1", value: "97% (84/86)", url: "https://r.sunc.su/s32uxbyT6u", status: "pass" },
-      { label: "SUNC TEST 2", value: "91% (79/86)", url: "https://r.sunc.su/ywOljX6kMM", status: "pass" },
-      { label: "MYRAD TEST 1", value: "98% (137/140)", status: "pass" },
-      { label: "MYRAD TEST 2", value: "98% (137/140)", status: "pass" },
-      { label: "VULNERABILITY TEST 1", value: "99% (157/159)", status: "pass" },
-      { label: "VULNERABILITY TEST 2", value: "99% (157/159)", status: "pass" },
-    ],
-    links: [
-      { label: "Quorum Nexomia Premium SUNC Test 1", url: "https://r.sunc.su/s32uxbyT6u" },
-      { label: "Quorum Nexomia Premium SUNC Test 2", url: "https://r.sunc.su/ywOljX6kMM" },
-    ],
-  },
-];
-
 const TerminalCard: React.FC<{ api: ApiResult; index: number }> = ({ api, index }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
@@ -127,12 +86,14 @@ const TerminalCard: React.FC<{ api: ApiResult; index: number }> = ({ api, index 
       <p className="text-gray-500 mb-3">
         Roblox Version Tested: <span className="text-gray-300">{api.robloxVersion}</span>
       </p>
+
       <div className="space-y-1">
         {api.lines.map((line) => (
           <div key={line.label} className="flex flex-wrap items-baseline gap-x-2">
             <span className={statusColor(line.status)}>+</span>
             <span className="text-gray-300">{line.label}:</span>
             <span className={statusColor(line.status)}>{line.value}</span>
+
             {line.url && (
               <a
                 href={line.url}
@@ -186,27 +147,21 @@ export const TestResults: React.FC = () => {
         <p className="text-xs font-mono tracking-[0.3em] text-primary/70 uppercase mb-3">
           Compatibility Benchmarks
         </p>
+
         <h1 className="text-3xl sm:text-4xl font-mono font-bold text-white mb-3">
           TEST RESULTS
         </h1>
+
         <p className="text-muted-foreground text-sm font-mono">
           UNC, SUNC, MYRAD, and vulnerability benchmark results for every API Fragment integrates with.
         </p>
       </div>
 
-      <section className="mb-14">
+      <section>
         <SectionHeader label="API's In Executor" />
+
         <div className="space-y-6">
           {IN_EXECUTOR.map((api, i) => (
-            <TerminalCard key={api.name} api={api} index={i} />
-          ))}
-        </div>
-      </section>
-
-      <section>
-        <SectionHeader label="API's Coming To Executor" />
-        <div className="space-y-6">
-          {COMING_SOON.map((api, i) => (
             <TerminalCard key={api.name} api={api} index={i} />
           ))}
         </div>
